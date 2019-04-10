@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './../style/style.scss';
+import './../css/style.scss';
 import Homepage from "./React/container/Pages/Homepage/Homepage";
+import { toolbarItemsArray } from "./data/homepage_data";
+import { mainMenuItems } from "./data/header_data";
 
 const mountNode =  document.getElementById('homepage_mount_node');
 
 ReactDOM.render(
-    <Homepage/>,
+    <Homepage
+        toolbarItems={toolbarItemsArray}
+        mainMenuItems={mainMenuItems}
+    />,
     mountNode
 );

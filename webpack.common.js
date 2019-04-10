@@ -1,4 +1,4 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+//const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -46,6 +46,21 @@ module.exports = {
                         options: {
                             name: '[name]-[hash:7].[ext]'
                         }
+                    },
+                    {
+                        loader: "image-webpack-loader",
+                        options: {
+                            svgo:{
+                                plugins: [
+                                    {
+                                        removeViewBox: false
+                                    },
+                                    {
+                                        cleanupIDs: false
+                                    }
+                                ]
+                            }
+                        }
                     }
                 ]
             },
@@ -65,9 +80,9 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin(),
-        new CopyWebpackPlugin([
+       /* new CopyWebpackPlugin([
             { from: './assets/static', to: 'static' }
-        ])
+        ])*/
     ],
 
 

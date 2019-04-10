@@ -51,17 +51,23 @@
 
     position: absolute;
     top: -25px;
-    left: -25px;
-
-
-    width: 50px;
-    height: 50px;
+    left: -30px;
 
     border: none;
 
     background-color: white;
 
     border-radius: 50px;
+
+    cursor: pointer;
+
+    .Svg{
+      width: 30px;
+      height: 30px;
+
+      padding: 10px 15px;
+
+    }
 
   }
 
@@ -79,6 +85,8 @@
     background-color: white;
 
     border-radius: 50px;
+
+    cursor: pointer;
 
   }
 
