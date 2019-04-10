@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './LargeFormatPrint.module.scss';
 //import PropTypes from 'prop-types';
         
-class LargeFormatPrint extends React.Component
+class LargeFormatPrint extends React.PureComponent
 {
     constructor(props){
         super(props);
