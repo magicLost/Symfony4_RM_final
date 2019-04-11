@@ -9,6 +9,8 @@
 
   margin:  auto ;
 
+  z-index: 99;
+
   .Title{
 
     display: flex;
@@ -25,10 +27,12 @@
     //transform: scale(0, 0);
     opacity: 0;
 
-    transition-property: opacity;
-    transition-duration: 0.3s;
+  /*  transition-property: opacity;
+    transition-duration: 0.3s;*/
 
-    div{
+    z-index: 99;
+
+    p{
 
       padding: 5px 10px;
 
@@ -51,21 +55,23 @@
 
     position: absolute;
     top: -25px;
-    left: -30px;
+    left: -25px;
 
     border: none;
 
-    background-color: white;
+    background-color: transparent;
 
-    border-radius: 50px;
+    border-radius: 60px;
 
     cursor: pointer;
 
+    z-index: 99;
+
     .Svg{
       width: 30px;
-      height: 30px;
+      height: 15px;
 
-      padding: 10px 15px;
+      padding: 17px 11px;
 
     }
 
@@ -87,6 +93,8 @@
     border-radius: 50px;
 
     cursor: pointer;
+
+    z-index: 99;
 
   }
 
@@ -114,6 +122,8 @@
     transition-duration: 0.5s;
 
     opacity: 0;
+
+    z-index: 99;
 
     .TopLeft{
 
@@ -185,22 +195,28 @@
   .Item{
 
     position: absolute;
-    top: -25px;
-    left: -25px;
+    top: -20px;
+    left: -20px;
 
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
 
     background-color: white;
 
-    border-radius: 50px;
-
     border: none;
+    border-radius: 50px;
 
     opacity: 0;
 
     transition-property: transform, opacity;
     transition-duration: 0.5s;
+
+    z-index: 99;
+
+    .ItemSvg{
+      width: 40px;
+      height: 40px;
+    }
 
   }
 
@@ -225,6 +241,8 @@
 
     transition-property: transform, opacity;
     transition-duration: 0.5s;
+
+    z-index: 99;
 
   }
 

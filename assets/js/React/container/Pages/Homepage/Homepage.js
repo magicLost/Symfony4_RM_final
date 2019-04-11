@@ -5,16 +5,8 @@ import './../../../../../css/style.scss';
 import classes from './Homepage.module.scss';
 import commonClasses from './../../../../../css/CommonClasses.module.scss';
 
-import Header from "../../../component/Header/Header";
-
-/*import ControlsFeature, { formType, type } from "../../ControlsFeature/ControlsFeature";
-import Logo from "../../../component/Logo/Logo";
-import MainMenuButton from "../../../component/UI/MainMenuButton/MainMenuButton";
-import MobileMenu from "../../MobileMenu/MobileMenu";
-import ToolButtons from "../../../component/ToolButtons/ToolButtons";*/
-
-
-
+import Header from "../Partial/Header/Header";
+import MainContent from "./Content/MainContent/MainContent";
 
         
 class Homepage extends React.PureComponent
@@ -85,18 +77,33 @@ class Homepage extends React.PureComponent
 
     };
 
-    controlsFeatureItemClickHandler = (index) => {
+    toolBarButtonClick = (index) => {
 
-        console.log("set state active section with index == " + index);
+        //const index = parseInt(event.target.dataset.index);
 
         this.setState((prevState) => {
 
             if(prevState.activeSectionIndex !== index){
 
-                return {
-                    activeSectionIndex: index
+                const newState = {};
+
+                if(index === 1 && !prevState.isPortfolioSectionCreated){
+
+                    newState.isPortfolioSectionCreated = true;
+
                 }
 
+                if(index === 2 && !prevState.isContactsSectionCreated){
+
+                    newState.isContactsSectionCreated = true;
+
+                }
+
+                this._setClassesByActiveIndex(index, prevState.activeSectionIndex);
+
+                newState.activeSectionIndex = index;
+
+                return newState;
             }
 
             return null;
@@ -122,76 +129,45 @@ class Homepage extends React.PureComponent
                     mainMenuButtonClickHandler={this.mainMenuButtonClickHandler}
                     mainMenuCloseButtonClickHandler={this.mainMenuCloseButtonClickHandler}
                     callMeButtonClickHandler={ this.callMeButtonClickHandler }
-                    toolBarItemClick={ this.controlsFeatureItemClickHandler }
+                    toolBarItemClick={ this.toolBarButtonClick }
 
                     isMainMenuCreated={this.state.isMainMenuCreated}
                     isShowMainMenu={this.state.isShowMainMenu}
                 />
 
-                {/*<header className={classes.Header}>
-
-                    <div className={classes.Wrapper}>
-
-                        <div className={classes.Logo}>
-
-                            <Logo />
-
-                        </div>
-
-                        <div className={classes.Toolbar}>
-
-                            <ControlsFeature
-                                itemClickHandler={() => {}}
-                                formType={formType.BOTTOM_HALF_CIRCLE}
-                                type={type.TEXT}
-                                itemsLength={3}
-                                items={this.props.toolbarItems}
-                                isShowTitle={false}
-                                isMainItemText={false}
-                            />
-
-                        </div>
-
-                        <div className={classes.MainMenuButton}>
-
-                            <MainMenuButton
-                                title={"Меню"}
-                                clickHandler={this.mainMenuButtonClickHandler}
-                            />
-
-                        </div>
-
-
-                    </div>
-
-                    <ToolButtons
-                        callMeButtonClickHandler={() => { console.log("callMeButtonClickHandler"); }}
-                    />
-
-                    {
-                        this.state.isMainMenuCreated &&
-                        <nav className={classes.Navigation} style={ this.state.isShowMainMenu ? null : {display: "none"} }>
-                            <MobileMenu
-                                items={this.props.mainMenuItems}
-                                closeButtonClickHandler={this.mainMenuCloseButtonClickHandler}
-                                backDropClickHandler={this.mainMenuBackDropClickHandler}
-                            />
-                        </nav>
-                    }
-
-
-
-                </header>*/}
-
                 <main>
 
-                    <h1>Content {this.state.activeSectionIndex}</h1>
+                    <div
+                        className={this.mainSectionClasses}
+                        style={(this.state.activeSectionIndex !== 0) ? { display: 'none'} : null}
+                    >
+                        <MainContent
+                            mainPresentationItems={this.props.mainPresentationItems}
+                            mainPresentationItemsControls={this.props.mainPresentationItemsControls}
+                        />
+                    </div>
+
+                    { this.state.isPortfolioSectionCreated &&
+                        <div
+                            className={this.portfolioSectionClasses}
+                            style={(this.state.activeSectionIndex !== 1) ? { display: 'none'} : null}
+                        >
+                            <h3>Портфолио.</h3>
+                        </div>
+                    }
 
                 </main>
 
                 <footer>
 
-
+                    { this.state.isContactsSectionCreated &&
+                        <div
+                            className={this.contactsSectionClasses}
+                            style={(this.state.activeSectionIndex !== 2) ? { display: 'none'} : null}
+                        >
+                            <h3>Контакты.</h3>
+                        </div>
+                    }
 
                 </footer>
 
@@ -200,13 +176,55 @@ class Homepage extends React.PureComponent
             
         );
     }
+
+    _setClassesByActiveIndex = (activeIndex, prevIndex) => {
+
+        switch(activeIndex){
+
+            case 0:
+
+                if(prevIndex === 1){
+
+                    this.mainSectionClasses = [ classes.Section, classes.AnimationMoveFromRightToCenter ].join(' ');
+                    this.portfolioSectionClasses = classes.Section;
+                    this.contactsSectionClasses = classes.Section;
+
+                }else{
+
+                    this.mainSectionClasses = [ classes.Section, classes.AnimationMoveFromLeftToCenter ].join(' ');
+                    this.portfolioSectionClasses = classes.Section;
+                    this.contactsSectionClasses = classes.Section;
+
+                }
+
+                break;
+
+            case 1:
+
+                this.mainSectionClasses = classes.Section;
+                this.portfolioSectionClasses = [ classes.Section, classes.AnimationMoveFromLeftToCenter ].join(' ');
+                this.contactsSectionClasses = classes.Section;
+                break;
+
+            case 2:
+                this.mainSectionClasses = classes.Section;
+                this.portfolioSectionClasses = classes.Section;
+                this.contactsSectionClasses = [ classes.Section, classes.AnimationMoveFromRightToCenter ].join(' ');
+                break;
+
+            default: console.error("no implementation for index == " + activeIndex);
+
+        }
+
+    };
 }
 
 Homepage.propTypes = {
 
-    //["Главное", "Портфолио", "Контакты"]
     toolbarItems: PropTypes.array.isRequired,
     mainMenuItems: PropTypes.array.isRequired,
+    mainPresentationItems: PropTypes.array.isRequired,
+    mainPresentationItemsControls: PropTypes.array.isRequired
  
 };
 

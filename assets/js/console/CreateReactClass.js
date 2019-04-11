@@ -55,7 +55,7 @@ class CreateReactClass
 import classes from './${this.className}.module.scss';
 import PropTypes from 'prop-types';
         
-class ${this.className} extends React.Component
+class ${this.className} extends React.PureComponent
 {
     constructor(props){
         super(props);

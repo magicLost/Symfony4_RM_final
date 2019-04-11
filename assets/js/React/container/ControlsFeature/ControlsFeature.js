@@ -34,6 +34,8 @@ class ControlsFeature extends React.PureComponent
     itemsLength = 0;
     radius = 100;
 
+    mainDivStyle = null;
+
     //-----------change by type
 
     mainItemClass = '';
@@ -70,6 +72,7 @@ class ControlsFeature extends React.PureComponent
         super(props);
 
         //set settings by type - bgItems visibility, degreesAll, degreesMarga
+        this.mainDivStyle = this.props.mainDivStyle ? this.props.mainDivStyle : null;
 
         this.itemsLength = this.props.itemsLength;
         this.itemsLengthForDegreesCalc = this.itemsLength - 1;
@@ -332,8 +335,12 @@ class ControlsFeature extends React.PureComponent
         let title = '';
         let bgStyle = null;
 
+        //top: -50px;
+
+
         let mainItem = this.getMainItem();
         const items = this.getItems();
+        //const items = this.getSvgItems();
 
         if(this.state.isShowItems){
 
@@ -348,7 +355,7 @@ class ControlsFeature extends React.PureComponent
 
         return (
         
-            <div className={classes.ControlsFeature}>
+            <div className={classes.ControlsFeature} style={this.mainDivStyle}>
 
                 { title }
 
@@ -376,6 +383,11 @@ class ControlsFeature extends React.PureComponent
         let mainItemContent = '';
         let className = classes.ItemMain;
         let onTouchMove = null;
+        let mainItemStyle = null;
+
+        if(this.state.isShowItems){
+            mainItemStyle = { backgroundColor: '#A4A4A4'}
+        }
 
         if(this.props.isShowTitle){
 
@@ -408,6 +420,7 @@ class ControlsFeature extends React.PureComponent
                 onTouchStart={this.mainItemTouchStartHandler}
                 onTouchEnd={this.mainItemTouchEndHandler}
                 onTouchMove={onTouchMove}
+                style={mainItemStyle}
             >
                 { mainItemContent }
             </button>
@@ -437,7 +450,7 @@ class ControlsFeature extends React.PureComponent
                     style={titleStyle}
                     className={classes.Title}
                 >
-                    <div><p>{ this.state.title }</p></div>
+                    <p>{ this.state.title }</p>
                 </div>
 
             );
@@ -450,53 +463,92 @@ class ControlsFeature extends React.PureComponent
 
     getItems = () => {
 
+        let itemClass = classes.Item;
+        let style = null;
 
+        let onMouseEnter = null;
+        let onMouseLeave = null;
+
+        if(this.props.type === type.TEXT){
+            itemClass = classes.ItemText;
+        }
+
+        if(this.state.isShowItems && this.props.isShowTitle){
+
+            onMouseEnter = this.itemMouseEnter;
+            onMouseLeave = this.itemMouseLeave;
+
+        }
 
         return this.props.items.map((value, index) => {
 
-            let style = null;
-
-            let onMouseEnter = null;
-            let onMouseLeave = null;
 
             if(this.state.isShowItems){
 
                 let degrees = this._getDegrees(index);
-
 
                 let translate = this._getTranslateByCircle(degrees);
 
                 style = { transform: translate, opacity: 1 };
                 style.boxShadow = "0 10px 18px rgba(0,0,0,0.25), 0 6px 6px rgba(0,0,0,0.22)";
 
-                if(this.props.isShowTitle){
+               /* if(this.props.isShowTitle){
 
                     onMouseEnter = this.itemMouseEnter;
                     onMouseLeave = this.itemMouseLeave;
 
-                }
+                }*/
 
             }
 
-            return (
+            if(this.props.type === type.TEXT){
+                return (
+                    <button
+                        key={itemClass + index}
+                        className={itemClass}
 
-                <button
-                    key={classes.Item + index}
-                    className={classes.ItemText}
+                        data-name={value}
+                        data-index={index}
 
-                    data-name={value}
-                    data-index={index}
+                        onMouseUp={this.itemMouseUpHandler}
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}
 
-                    onMouseUp={this.itemMouseUpHandler}
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
+                        style={style}
+                    >
+                        {value}
+                    </button>
+                );
+            }else{
 
-                    style={style}
-                >
-                    {value}
-                </button>
+                return (
 
-            );
+                    <button
+                        key={itemClass + index}
+                        className={itemClass}
+
+                        data-name={value.title}
+                        data-index={index}
+
+                        onMouseUp={this.itemMouseUpHandler}
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}
+
+                        style={style}
+                    >
+                        <svg
+                            className={classes.ItemSvg}
+                            width="5"
+                            height={"5"}
+                            data-name={value.title}
+                        >
+                            <use data-index={index} data-name={value.title}  xlinkHref={icons + value.href}/>
+                        </svg>
+                    </button>
+
+                );
+
+            }
 
         });
 
@@ -694,7 +746,9 @@ ControlsFeature.propTypes = {
     items: PropTypes.array.isRequired,
 
     isShowTitle: PropTypes.bool.isRequired,
-    isMainItemText: PropTypes.bool.isRequired
+    isMainItemText: PropTypes.bool.isRequired,
+
+    mainDivStyle: PropTypes.object
 
 };
 

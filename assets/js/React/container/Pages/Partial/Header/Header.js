@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import classes from './Header.module.scss';
-import Logo from "../Logo/Logo";
-import ControlsFeature, {formType, type} from "../../container/ControlsFeature/ControlsFeature";
-import MainMenuButton from "../UI/MainMenuButton/MainMenuButton";
-import ToolButtons from "../ToolButtons/ToolButtons";
-import MobileMenu from "../../container/MobileMenu/MobileMenu";
+import Logo from "../../../../component/Logo/Logo";
+import ControlsFeature, {formType, type} from "../../../ControlsFeature/ControlsFeature";
+import MainMenuButton from "../../../../component/UI/MainMenuButton/MainMenuButton";
+import ToolButtons from "../../../../component/ToolButtons/ToolButtons";
+import MobileMenu from "../../../MobileMenu/MobileMenu";
 
 class Header extends React.PureComponent
 {

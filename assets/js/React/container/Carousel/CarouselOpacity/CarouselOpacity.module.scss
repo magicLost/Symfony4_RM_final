@@ -1,0 +1,47 @@
+.CarouselOpacity{
+
+  width: 100%;
+
+  //background-color: #fcd6ff;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background: linear-gradient(45deg, pink, cyan);
+
+
+  .ItemsList{
+
+    width: 100%;
+    margin: auto;
+
+    //overflow: hidden;
+    //border: 1px solid black;
+
+    list-style: none;
+
+    display: flex;
+
+    .Item{
+
+      width: 100%;
+      min-height: 600px;
+
+      text-align: center;
+
+      opacity: 0;
+
+      margin-left: -100%;
+
+      //background: linear-gradient(45deg, pink, cyan);
+
+      flex-grow: 0;
+      flex-shrink: 0;
+
+      &:first-child{
+        margin-left: 0;
+      }
+
+    }
+
+  }
+
+}
