@@ -13,6 +13,10 @@ class CarouselTranslate extends React.Component
 
     prevPageX = 0;
     pageXStart = 0;
+    pageYStart = 0;
+
+    isYScroll = false;
+    isFirstMove = true;
 
     state = {
 
@@ -32,14 +36,21 @@ class CarouselTranslate extends React.Component
         event.preventDefault();
         event.stopPropagation();
 
-        //const touches = event.changedTouches[0];
-        this.pageXStart = event.pageX;
-        this.prevPageX = event.pageX;
-
-        this.listStyle = {};
+        this._onPointerDown(event.pageX, event.pageY);
 
         window.addEventListener('mousemove', this.mouseMoveHandler, false );
         window.addEventListener('mouseup', this.mouseUpHandler, false );
+
+    };
+
+    touchStartHandler = (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const touches = event.changedTouches[0];
+
+        this._onPointerDown(touches.pageX, touches.pageY);
 
     };
 
@@ -48,21 +59,15 @@ class CarouselTranslate extends React.Component
         event.preventDefault();
         event.stopPropagation();
 
-        //console.log(this.pageXStart - event.pageX);
+        this._onPointerMove(event.pageX, event.pageY);
 
-        const translateX = this._calcTranslateX(event.pageX);
+    };
 
-        //console.log(translateX);
+    touchMoveHandler = (event) => {
 
-        this.setState((prevState) => {
+        const touches = event.changedTouches[0];
 
-            return {
-
-                translateX: prevState.translateX + translateX
-
-            }
-
-        });
+        this._onPointerMove(touches.pageX, touches.pageY);
 
     };
 
@@ -71,39 +76,16 @@ class CarouselTranslate extends React.Component
         event.preventDefault();
         event.stopPropagation();
 
-        //console.log("mouseUpHandler");
-        //console.log(event.pageX);
-
-        this.listStyle = {
-            transitionProperty: 'transform',
-            transitionDuration: '0.5s'
-        };
+        this._onPointerUp(event.pageX);
 
         window.removeEventListener('mousemove', this.mouseMoveHandler, false );
         window.removeEventListener('mouseup', this.mouseUpHandler, false );
 
-        const dist = this.pageXStart - event.pageX;
+    };
 
-        if(Math.abs(dist) > 15){
+    touchEndHandler = (event) => {
 
-            if(dist < 0){
-
-                this.props.decreaseActiveIndex();
-                this.setState({ translateX: 0 });
-
-            }else{
-
-                this.props.increaseActiveIndex();
-                this.setState({ translateX: 0 });
-
-            }
-
-        }else{
-
-            this.setState({ translateX: 0 });
-
-        }
-
+        this._onPointerUp(event.changedTouches[0].pageX);
 
     };
     
@@ -115,6 +97,7 @@ class CarouselTranslate extends React.Component
 
         //console.log(translateX);
         //console.log("render carousel");
+        //const mainDivStyle =
 
         const listStyle = {
             ...this.listStyle,
@@ -131,6 +114,9 @@ class CarouselTranslate extends React.Component
                    <ul
                        className={classes.ItemsList}
                        onMouseDown={this.mouseDownHandler}
+                       onTouchStart={this.touchStartHandler}
+                       onTouchMove={this.touchMoveHandler}
+                       onTouchEnd={this.touchEndHandler}
                        style={listStyle}
                    >
 
@@ -146,28 +132,94 @@ class CarouselTranslate extends React.Component
         );
     }
 
-   /* getItems = () => {
 
-        return this.props.items.map((value, index) => {
+    _onPointerDown = (pageX, pageY) => {
 
-            return (
+        this.pageXStart = pageX;
+        this.pageYStart = pageY;
+        this.prevPageX = pageX;
 
-                <li
-                    key={classes.Item + index}
-                    className={classes.Item}
-                >
+        this.listStyle = {};
 
-                    <h3>{index}</h3>
-                    <p>Hello, my friend</p>
-                    <button>Click {index}</button>
+    };
 
-                </li>
+    _onPointerMove = (pageX, pageY) => {
 
-            );
+        if(this.isFirstMove){
 
-        });
+            const distX = Math.abs(pageX - this.pageXStart);
+            const distY = Math.abs(pageY - this.pageYStart);
 
-    };*/
+            //console.log("distX " + distX);
+            //console.log(event);
+
+            if(distY > distX)
+                this.isYScroll = true;
+
+            this.isFirstMove = false;
+
+        }
+
+        if(!this.isYScroll){
+
+            //event.preventDefault();
+            //event.stopPropagation();
+
+            const translateX = this._calcTranslateX(pageX);
+
+            this.setState((prevState) => {
+
+                return {
+
+                    translateX: prevState.translateX + translateX
+
+                }
+
+            });
+
+        }
+
+
+    };
+
+    _onPointerUp = (pageX) => {
+
+
+        if(!this.isYScroll){
+
+            this.listStyle = {
+                transitionProperty: 'transform',
+                transitionDuration: '0.5s'
+            };
+
+            const dist = this.pageXStart - pageX;
+
+            if(Math.abs(dist) > 15){
+
+                if(dist < 0){
+
+                    this.props.decreaseActiveIndex();
+                    this.setState({ translateX: 0 });
+
+                }else{
+
+                    this.props.increaseActiveIndex();
+                    this.setState({ translateX: 0 });
+
+                }
+
+            }else{
+
+                this.setState({ translateX: 0 });
+
+            }
+
+        }
+
+        this.isYScroll = false;
+        this.isFirstMove = true;
+
+    };
 
     _getTranslateX = () => {
 

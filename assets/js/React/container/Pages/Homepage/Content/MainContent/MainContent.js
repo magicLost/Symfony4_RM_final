@@ -2,7 +2,11 @@ import React from 'react';
 import classes from './MainContent.module.scss';
 import PropTypes from 'prop-types';
 import MainPresentation from "../../../../MainPresentation/MainPresentation";
-        
+import HtmlParser from "../../../../HtmlParser/HtmlParser";
+import {mainText, clients} from "../../../../../../data/homepage_data";
+import ListSvg, {svgType} from "../../../../../component/UI/ListSvg/ListSvg";
+
+
 class MainContent extends React.PureComponent
 {
     /*constructor(props){
@@ -19,8 +23,11 @@ class MainContent extends React.PureComponent
                     carouselControlsItems={this.props.mainPresentationItemsControls}
                 />
 
-                <h3>What the f..k.</h3>
-                <p>Hello, my friend..</p>
+                <HtmlParser items={mainText} />
+
+                <div className={classes.Clients}>
+                    <ListSvg title={"Наши клиенты"} items={clients} typeSvg={svgType.CLIENTS} />
+                </div>
 
             </div>
             

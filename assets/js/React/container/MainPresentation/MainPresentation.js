@@ -96,7 +96,10 @@ class MainPresentation extends React.PureComponent
                         items={this.props.carouselControlsItems}
                         isShowTitle={true}
                         isMainItemText={false}
-                        mainDivStyle={{top: '-50px'}}
+                        config={{
+                            mainDivStyle: { top: '-50px' },
+                            mainItemStyle: { backgroundColor: "#fafafa" }
+                        }}
                     />
                 </div>
 

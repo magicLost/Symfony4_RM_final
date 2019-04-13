@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1965.78 539">
+    <title>ya_taxi</title>
+    <text transform="translate(143.16 377.68) scale(0.79 1)" style="font-size:352.8881530761719px;font-family:Consolas">
+        ндекс
+    </text>
+    <text transform="translate(0 385.39) scale(0.63 1)"
+          style="font-size:418.2368469238281px;fill:red;font-family:Consolas">Я
+    </text>
+    <text transform="translate(1054.18 361.89) scale(1.05 1)"
+          style="font-size:267.4309387207031px;font-family:MyriadPro-Regular, Myriad Pro">
+        <tspan style="letter-spacing:-0.07998714981267159em">Т</tspan>
+        <tspan x="111.52" y="0">а</tspan>
+        <tspan x="240.42" y="0" style="letter-spacing:-0.005996766056604538em">к</tspan>
+        <tspan x="366.91" y="0">си</tspan>
+    </text>
+    <polygon points="934.39 20 934.39 519 1784.63 519 1942 291.05 1779.16 20 934.39 20"
+             style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:40px"/>
+</svg>

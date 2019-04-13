@@ -5,6 +5,7 @@ import MathF from "../../../helper/MathF";
 
 import icons from "./../../../../static/icons/ICONS.svg";
 
+
 export const type = {
 
     TEXT: "TEXT",
@@ -31,10 +32,15 @@ export const formType = {
 class ControlsFeature extends React.PureComponent
 {
 
+    config = {
+        mainDivStyle: { top: 0 },
+        mainItemStyle: { backgroundColor: "white" }
+    };
+
     itemsLength = 0;
     radius = 100;
 
-    mainDivStyle = null;
+    //mainDivStyle = null;
 
     //-----------change by type
 
@@ -72,7 +78,17 @@ class ControlsFeature extends React.PureComponent
         super(props);
 
         //set settings by type - bgItems visibility, degreesAll, degreesMarga
-        this.mainDivStyle = this.props.mainDivStyle ? this.props.mainDivStyle : null;
+        //this.mainDivStyle = this.props.mainDivStyle ? this.props.mainDivStyle : null;
+        if(this.props.config){
+
+            if(this.props.config.mainDivStyle){
+                this.config.mainDivStyle = this.props.config.mainDivStyle;
+            }
+
+            if(this.props.config.mainItemStyle){
+                this.config.mainItemStyle = this.props.config.mainItemStyle;
+            }
+        }
 
         this.itemsLength = this.props.itemsLength;
         this.itemsLengthForDegreesCalc = this.itemsLength - 1;
@@ -226,8 +242,10 @@ class ControlsFeature extends React.PureComponent
 
     itemMouseUpHandler = (event) => {
 
+        const target = event.target;
+       /*
         let pageX = event.pageX;
-        let pageY = event.pageY;
+        let pageY = event.pageY;*/
 
         this.setState((prevState) => {
 
@@ -235,8 +253,10 @@ class ControlsFeature extends React.PureComponent
 
                 let index = -1;
 
-                const target = document.elementFromPoint(pageX, pageY);
+                //const target = document.elementFromPoint(pageX, pageY);
 
+                //console.log("itemMouseUpHandler");
+                //console.log(target);
 
                 if(target && target.dataset && target.dataset.index){
 
@@ -246,7 +266,7 @@ class ControlsFeature extends React.PureComponent
 
                 }
 
-                if(this.props.type === type.TEXT){
+                if(this.props.isMainItemText && this.props.type === type.TEXT){
 
                     const mainItemText = (index !== -1) ? this.props.items[index] : prevState.mainItemText;
 
@@ -330,7 +350,7 @@ class ControlsFeature extends React.PureComponent
     
     render(){
 
-        console.log("controls feature render");
+        //console.log("controls feature render");
 
         let title = '';
         let bgStyle = null;
@@ -355,7 +375,7 @@ class ControlsFeature extends React.PureComponent
 
         return (
         
-            <div className={classes.ControlsFeature} style={this.mainDivStyle}>
+            <div className={classes.ControlsFeature} style={this.config.mainDivStyle}>
 
                 { title }
 
@@ -383,11 +403,11 @@ class ControlsFeature extends React.PureComponent
         let mainItemContent = '';
         let className = classes.ItemMain;
         let onTouchMove = null;
-        let mainItemStyle = null;
+        //let mainItemStyle = null;
 
-        if(this.state.isShowItems){
+       /* if(this.state.isShowItems){
             mainItemStyle = { backgroundColor: '#A4A4A4'}
-        }
+        }*/
 
         if(this.props.isShowTitle){
 
@@ -420,7 +440,7 @@ class ControlsFeature extends React.PureComponent
                 onTouchStart={this.mainItemTouchStartHandler}
                 onTouchEnd={this.mainItemTouchEndHandler}
                 onTouchMove={onTouchMove}
-                style={mainItemStyle}
+                style={this.config.mainItemStyle}
             >
                 { mainItemContent }
             </button>
@@ -748,7 +768,7 @@ ControlsFeature.propTypes = {
     isShowTitle: PropTypes.bool.isRequired,
     isMainItemText: PropTypes.bool.isRequired,
 
-    mainDivStyle: PropTypes.object
+    config: PropTypes.object
 
 };
 

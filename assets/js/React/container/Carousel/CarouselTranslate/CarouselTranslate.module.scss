@@ -1,11 +1,11 @@
 .CarouselTranslate{
 
+  touch-action: pan-y;
 
   width: 100%;
 
   overflow: hidden;
 
-  background-color: #fafafa;
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   //background: linear-gradient(45deg, pink, cyan);

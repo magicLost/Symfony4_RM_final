@@ -7,6 +7,7 @@ import commonClasses from './../../../../../css/CommonClasses.module.scss';
 
 import Header from "../Partial/Header/Header";
 import MainContent from "./Content/MainContent/MainContent";
+import Contacts from "../Partial/Contacts/Contacts";
 
         
 class Homepage extends React.PureComponent
@@ -165,7 +166,7 @@ class Homepage extends React.PureComponent
                             className={this.contactsSectionClasses}
                             style={(this.state.activeSectionIndex !== 2) ? { display: 'none'} : null}
                         >
-                            <h3>Контакты.</h3>
+                            <Contacts/>
                         </div>
                     }
 
