@@ -8,6 +8,7 @@ import commonClasses from './../../../../../css/CommonClasses.module.scss';
 import Header from "../Partial/Header/Header";
 import MainContent from "./Content/MainContent/MainContent";
 import Contacts from "../Partial/Contacts/Contacts";
+import PortfolioContent from "./Content/PortfolioContent/PortfolioContent";
 
         
 class Homepage extends React.PureComponent
@@ -153,7 +154,11 @@ class Homepage extends React.PureComponent
                             className={this.portfolioSectionClasses}
                             style={(this.state.activeSectionIndex !== 1) ? { display: 'none'} : null}
                         >
-                            <h3>Портфолио.</h3>
+                            <PortfolioContent
+                                categories={this.props.portfolioCategories}
+                                icons={this.props.portfolioCategoriesIcons}
+                                photos={this.props.portfolioPhotos}
+                            />
                         </div>
                     }
 
@@ -223,10 +228,16 @@ class Homepage extends React.PureComponent
 Homepage.propTypes = {
 
     toolbarItems: PropTypes.array.isRequired,
+
     mainMenuItems: PropTypes.array.isRequired,
+
     mainPresentationItems: PropTypes.array.isRequired,
-    mainPresentationItemsControls: PropTypes.array.isRequired
- 
+    mainPresentationItemsControls: PropTypes.array.isRequired,
+
+    portfolioCategories: PropTypes.array.isRequired,
+    portfolioCategoriesIcons: PropTypes.array.isRequired,
+    portfolioPhotos: PropTypes.array.isRequired
+
 };
 
 export default Homepage;

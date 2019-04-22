@@ -8,15 +8,22 @@ import {
     mainPresentationItems,
     mainPresentationItemsControls } from "./data/homepage_data";
 import { mainMenuItems } from "./data/header_data";
+import { categories, icons, photos } from "./data/portfolio_data";
 
 const mountNode =  document.getElementById('homepage_mount_node');
 
 ReactDOM.render(
     <Homepage
         toolbarItems={toolbarItemsArray}
+
         mainMenuItems={mainMenuItems}
+
         mainPresentationItems={mainPresentationItems}
         mainPresentationItemsControls={mainPresentationItemsControls}
+
+        portfolioCategories={categories}
+        portfolioCategoriesIcons={icons}
+        portfolioPhotos={photos}
     />,
     mountNode
 );

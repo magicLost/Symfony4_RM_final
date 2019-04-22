@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
         
 class CarouselTranslate extends React.Component
 {
-    itemsLength = 0;
+    //itemsLength = 0;
 
     listStyle = {
         transitionProperty: 'transform',
@@ -28,7 +28,7 @@ class CarouselTranslate extends React.Component
     constructor(props){
         super(props);
 
-        this.itemsLength = this.props.itemsLength;
+        //this.itemsLength = this.props.itemsLength;
     }
 
     mouseDownHandler = (event) => {
@@ -253,7 +253,7 @@ class CarouselTranslate extends React.Component
 
             }
 
-        }else if(this.props.activeIndex === this.itemsLength - 1){
+        }else if(this.props.activeIndex === this.props.itemsLength - 1){
 
             if(this.pageXStart - pageX > 0){
 
@@ -293,8 +293,7 @@ CarouselTranslate.propTypes = {
     itemsLength: PropTypes.number.isRequired,
     activeIndex: PropTypes.number.isRequired,
     increaseActiveIndex: PropTypes.func.isRequired,
-    decreaseActiveIndex: PropTypes.func.isRequired,
-    setActiveIndex: PropTypes.func.isRequired
+    decreaseActiveIndex: PropTypes.func.isRequired
 
 };
 

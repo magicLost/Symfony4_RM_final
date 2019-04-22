@@ -17,7 +17,8 @@
     "jest": "./node_modules/.bin/jest",
     "test": "jest ",
     "create:class": "node ./assets/js/console/CreateReactClass.js",
-    "create:func": "node ./assets/js/console/CreateReactFunc.js"
+    "create:func": "node ./assets/js/console/CreateReactFunc.js",
+    "create:portfolio-data": "node ./assets/js/console/CreatePortfolioData.js"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

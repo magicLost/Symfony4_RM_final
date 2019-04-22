@@ -1,22 +1,24 @@
 import React from 'react';
 import classes from './CarouselOpacity.module.scss';
 import PropTypes from 'prop-types';
-import MobileCarouselControls from "../../MobileCarouselControls/MobileCarouselControls";
         
-class CarouselOpacity extends React.Component
+class CarouselOpacity extends React.PureComponent
 {
     pageXStart = 0;
-    dist = 0;
+    pageYStart = 0;
 
+    isYScroll = false;
+    isFirstMove = true;
+
+    dist = 0;
     delta = 0;
 
-    nextIndex = 1;
+    isTranslated = false;
 
     state = {
 
-        activeIndex: 0,
-        currentOpacity: 1,
-        prevOpacity: 0
+
+        opacity: 1,
 
     };
 
@@ -47,9 +49,6 @@ class CarouselOpacity extends React.Component
 
     mouseUpHandler = (event) => {
 
-        event.preventDefault();
-        event.stopPropagation();
-
         console.log("mouseUpHandler");
         //console.log(event.pageX);
 
@@ -62,18 +61,25 @@ class CarouselOpacity extends React.Component
 
     touchStartHandler = (event) => {
 
-        //event.preventDefault();
-        //event.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
 
         console.log("touchStartHandler");
 
-        this._onPointerDown(event.changedTouches[0].pageX);
+        const touches = event.changedTouches[0];
+
+        this._onPointerDown(touches.pageX, touches.pageY);
 
     };
 
     touchMoveHandler = (event) => {
 
-        this._onPointerMove(event.changedTouches[0].pageX);
+        event.preventDefault();
+        event.stopPropagation();
+
+        const touches = event.changedTouches[0];
+
+        this._onPointerMove(touches.pageX, touches.pageY);
 
     };
 
@@ -103,8 +109,6 @@ class CarouselOpacity extends React.Component
 
                 </ul>
 
-                <MobileCarouselControls />
-
             </div>
             
         );
@@ -116,27 +120,24 @@ class CarouselOpacity extends React.Component
 
             let style = null;
 
-            if(this.state.activeIndex === index){
+            if(this.props.activeIndex === index){
 
-                if(this.state.currentOpacity === 1){
+                if(this.isTranslated){
 
                     style = {
                         transitionProperty: 'opacity',
-                        transitionDuration: '1s',
-                        opacity: this.state.currentOpacity
+                        opacity: this.state.opacity
                     }
 
                 }else{
 
-                    style = { opacity: this.state.currentOpacity }
+                    style = {
+                        transitionProperty: 'opacity',
+                        transitionDuration: '1s',
+                        opacity: this.state.opacity
+                    }
 
                 }
-
-            }
-
-            if(this.nextIndex === index){
-
-                style = { opacity: this.state.prevOpacity }
 
             }
 
@@ -148,11 +149,7 @@ class CarouselOpacity extends React.Component
                     style={style}
                 >
 
-                    <h3>{index}</h3>
-                    <p>Hello, my friend</p>
-                    <button
-                        onClick={(event) => { console.log("click")}}
-                    >Click {index}</button>
+                    { this.props.getItem(index, this.props.activeIndex) }
 
                 </li>
 
@@ -162,117 +159,98 @@ class CarouselOpacity extends React.Component
 
     };
 
-    _getNextIndex = (activeIndex) => {
+    _onPointerDown = (pageX, pageY) => {
 
-        if(activeIndex >= this.props.items.length - 1){
+        this.pageXStart = pageX;
+        this.pageYStart = pageY;
 
-            return 0;
-
-        }
-
-        return activeIndex + 1;
-
-    };
-
-    _getPrevIndex = (activeIndex) => {
-
-        if(activeIndex <= 0){
-
-            return this.props.items.length - 1;
-
-        }
-
-        return activeIndex - 1;
-
-    };
-
-    _onPointerDown = (pageX) => {
+        this.isTranslated = true;
 
         this.dist = 0;
         this.delta = document.documentElement.clientWidth / 100;
 
-        //const touches = event.changedTouches[0];
-        this.pageXStart = pageX;
-
     };
 
-    _onPointerMove = (pageX) => {
+    _onPointerMove = (pageX, pageY) => {
 
 
-        this.setState((prevState) => {
+        if(this.isFirstMove){
 
-            this.dist = this.pageXStart - pageX;
+            const distX = Math.abs(pageX - this.pageXStart);
+            const distY = Math.abs(pageY - this.pageYStart);
 
-            if(this.dist > 0){
+            //console.log("distX " + distX);
+            //console.log(event);
 
-                this.nextIndex = this._getNextIndex(prevState.activeIndex);
+            if(distY > distX)
+                this.isYScroll = true;
 
-                const currentOpacity = 1 - Math.abs(Math.round(this.dist / this.delta)) / 100;
-                const prevOpacity = 1 - currentOpacity;
+            this.isFirstMove = false;
 
-                /*console.log("currentOpacity == " + currentOpacity);
-                console.log("prevOpacity == " + prevOpacity);*/
+        }
 
-                return {
+        if(!this.isYScroll){
 
-                    currentOpacity: currentOpacity,
-                    prevOpacity: prevOpacity
+            this.setState((prevState) => {
 
-                }
-
-            }else if(this.dist < 0){
-
-                this.nextIndex = this._getPrevIndex(prevState.activeIndex);
-
-                const currentOpacity = 1 - Math.abs(Math.round(this.dist / this.delta)) / 100;
-                const prevOpacity = 1 - currentOpacity;
-
-               /* console.log("currentOpacity == " + currentOpacity);
-                console.log("prevOpacity == " + prevOpacity);*/
+                this.dist = this.pageXStart - pageX;
 
                 return {
 
-                    currentOpacity: currentOpacity,
-                    prevOpacity: prevOpacity
+                    /*currentOpacity: currentOpacity,
+                    prevOpacity: prevOpacity*/
+                    opacity: 1 - Math.abs(Math.round(this.dist / this.delta)) / 100
 
-                }
+                };
 
-            }
+            });
 
-            return null;
-
-        });
+        }
 
     };
 
     _onPointerUp = () => {
 
-        if(Math.abs(this.dist) < 25)
-            return;
+        if(!this.isYScroll){
 
-        this.setState((prevState) => {
+            this.setState(() => {
 
-            if(prevState.activeIndex !== this.nextIndex){
+                if(Math.abs(this.dist) > 25){
 
-                const nextIndex = this.nextIndex;
-                this.nextIndex++;
+                    if(this.dist > 0){
 
-                return {
+                        this.props.increaseActiveIndex();
 
-                    activeIndex: nextIndex,
-                    currentOpacity: 1,
-                    prevOpacity: 0
+                    }else{
+
+                        this.props.decreaseActiveIndex();
+
+                    }
 
                 }
-            }
-        });
+
+                return { opacity: 1 };
+
+            });
+
+        }
+
+        this.isTranslated = false;
+        this.isYScroll = false;
+        this.isFirstMove = true;
+
     };
 
 }
 
 CarouselOpacity.propTypes = {
 
-    items: PropTypes.array.isRequired
+    items: PropTypes.any.isRequired,
+    getItem: PropTypes.func.isRequired,
+
+    activeIndex: PropTypes.number.isRequired,
+    increaseActiveIndex: PropTypes.func.isRequired,
+    decreaseActiveIndex: PropTypes.func.isRequired
  
 };
 

@@ -2,18 +2,35 @@ import React from 'react';
 import classes from './Scroller.module.scss';
 import PropTypes from 'prop-types';
 import CalcTranslateX from "./Model/CalcTranslateX";
-import EventSorter, {EVENT_TYPE} from "../Touches/Model/EventSorter";
-import MathF from "../../helper/MathF";
-        
+import MathF from "../../../helper/MathF";
+import EventSorter, { EVENT_TYPE } from "./Model/EventSorter";
+
+export const scrollerType = {
+
+    IMG_ICONS: "IMG_ICONS",
+    CARDS: "CARDS"
+
+};
+
 class Scroller extends React.Component
 {
 
+    isNeedRenderItems = true;
+    items = null;
+
+    containerRef = React.createRef();
     listRef = React.createRef();
     itemRef = React.createRef();
-    numberOfItems = 0;
+    //numberOfItems = 0;
 
     calc = null;
     eventSorter = null;
+    eventType = '';
+
+    isYScroll = false;
+    isFirstMove = true;
+
+    offsetX = 0;
 
     listStyle = {
         transitionProperty: 'transform',
@@ -22,23 +39,116 @@ class Scroller extends React.Component
 
     state = {
 
-        translateX: 0
+        translateX: 0,
+
+        isNeedScroller: false
 
     };
 
     constructor(props){
+
         super(props);
 
         this.calc = new CalcTranslateX();
         this.eventSorter = new EventSorter();
 
-        this.numberOfItems = this.props.items.length;
+        //this.numberOfItems = this.props.items.length;
+        this.items = this.getItems();
+
+        window.addEventListener('resize', this.windowResizeHandler, false);
 
     }
 
     componentDidMount(){
 
         this._init();
+
+    };
+
+    shouldComponentUpdate(nextProps, nextState){
+
+        if(JSON.stringify(this.props.items) !== JSON.stringify(nextProps.items)){
+
+            this.isNeedRenderItems = true;
+
+            this._setValues(nextProps.itemsLength);
+
+            return true;
+
+        }else{
+
+            this.isNeedRenderItems = false;
+
+            return JSON.stringify(this.state) !== JSON.stringify(nextState);
+
+        }
+
+    };
+
+    windowResizeHandler = (event) => {
+
+        console.log("windowResizeHandler");
+
+        this._setValues(this.props.itemsLength);
+
+        this.offsetX = this.containerRef.current.getBoundingClientRect().x;
+
+        //console.log(this.listRef.current.getBoundingClientRect().x);
+
+        const isNeedScroller = this._isNeedScroller(
+            this.calc.listWidth,
+            this.calc.itemWidth,
+            this.props.itemsLength);
+
+        console.log("isNeedScroller = " + isNeedScroller);
+
+        this.setState((prevState) => {
+
+            if(prevState.isNeedScroller === false){
+
+                if(isNeedScroller === false){
+                    return null;
+                }else{
+
+                    return { isNeedScroller: true };
+
+                }
+
+            }else{
+
+                if(isNeedScroller === false){
+                    return {
+                        isNeedScroller: false,
+                        translateX: 0
+                    };
+                }else{
+
+                    //check if translateX is out offsets
+                    //return translateX > this.maxTranslateOffset || translateX < this.minTranslateOffset;
+                    let translateX = prevState.translateX;
+                    if(translateX > this.calc.maxTranslateOffset){
+
+                        translateX = this.calc.maxTranslateOffset;
+
+                    }else if(translateX < this.calc.minTranslateOffset){
+
+                        translateX = this.calc.minTranslateOffset;
+
+                    }
+
+                    if(translateX !== prevState.translateX){
+                        return { translateX: translateX };
+                    }
+
+                    return null;
+
+
+                }
+
+            }
+
+        });
+
 
     };
 
@@ -52,16 +162,35 @@ class Scroller extends React.Component
 
         this.listStyle = {};
 
-        const translateX = this.listRef.current.getBoundingClientRect().x;
+        const translateX = this.listRef.current.getBoundingClientRect().x - Math.abs(this.offsetX);
 
-        this.setState({translateX: translateX});
+        this.setState((prevState) => {
 
-        //console.log(translateX);
+            if(prevState.translateX !== translateX){
+
+                return {translateX: translateX};
+
+            }
+
+            return null;
+
+        });
 
         this.eventSorter.onTouchStart(event.pageX, event.pageY);
 
         window.addEventListener('mousemove', this.mouseMoveHandler, false );
         window.addEventListener('mouseup', this.mouseUpHandler, false );
+
+    };
+
+    touchStartHandler = (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const touches = event.changedTouches[0];
+
+        this._pointerDownHandler(touches.pageX, touches.pageY);
 
     };
 
@@ -90,6 +219,17 @@ class Scroller extends React.Component
 
     };
 
+    touchMoveHandler = (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const touches = event.changedTouches[0];
+
+        this._pointerMoveHandler(touches.pageX, touches.pageY);
+
+    };
+
     mouseUpHandler = (event) => {
 
         event.preventDefault();
@@ -105,7 +245,7 @@ class Scroller extends React.Component
         //what event - move, swipe etc...
         this.eventSorter.onTouchEnd(event.pageX);
 
-        const eventType = this.eventSorter.whatEventType(event.pageY);
+        this.eventType = this.eventSorter.whatEventType(event.pageY);
 
         //console.log(eventType);
 
@@ -127,7 +267,7 @@ class Scroller extends React.Component
 
                 }
 
-            }else if(eventType === EVENT_TYPE.SWIPE || eventType === EVENT_TYPE.SWIPE_MOVE) {
+            }else if(this.eventType === EVENT_TYPE.SWIPE || this.eventType === EVENT_TYPE.SWIPE_MOVE) {
 
                 //console.log("swipe");
                 //console.log(this.eventSorter.getSwipeSpeed());
@@ -149,10 +289,55 @@ class Scroller extends React.Component
         });
 
     };
+
+    touchEndHandler = (event) => {
+
+        const touches = event.changedTouches[0];
+
+        this._pointerUpHandler(touches.pageX, touches.pageY);
+
+    };
+
+    itemClickHandler = (event) => {
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        console.log("itemClickHandler" + this.eventType);
+
+        if(this.state.isNeedScroller){
+
+            if(this.eventType === EVENT_TYPE.CLICK){
+
+                this.props.itemClickHandler(parseInt(event.target.dataset.index));
+
+            }
+
+        }else{
+
+            this.props.itemClickHandler(parseInt(event.target.dataset.index));
+
+        }
+
+
+
+    };
     
     render(){
 
-        const items = this.getItems();
+        console.log("Scroller render");
+
+        if(this.state.isNeedScroller){
+            return this.scrollerRender();
+        }
+
+        return this.noScrollerRender();
+
+    }
+
+    scrollerRender = () => {
+
+        const items = (this.isNeedRenderItems) ? this.items = this.getItems() : this.items;
 
         // 'calc(' + translateByActiveIndex + " + " + this.state.translateX + 'px)'
         const listStyle = {
@@ -161,13 +346,19 @@ class Scroller extends React.Component
         };
 
         return (
-        
-            <div className={classes.Scroller}>
+
+            <div
+                className={classes.Scroller}
+                ref={this.containerRef}
+            >
 
                 <ul
                     ref={this.listRef}
                     className={classes.ItemsList}
                     onMouseDown={this.mouseDownHandler}
+                    onTouchStart={this.touchStartHandler}
+                    onTouchMove={this.touchMoveHandler}
+                    onTouchEnd={this.touchEndHandler}
                     style={listStyle}
                 >
 
@@ -176,68 +367,279 @@ class Scroller extends React.Component
                 </ul>
 
             </div>
-            
+
         );
-    }
+
+    };
+
+    noScrollerRender = () => {
+
+        const items = (this.isNeedRenderItems) ? this.items = this.getItems() : this.items;
+
+        return (
+
+            <div
+                className={classes.Scroller}
+                ref={this.containerRef}
+            >
+
+                <ul
+                    ref={this.listRef}
+                    className={classes.ItemsList}
+                    style={{justifyContent: "center"}}
+                >
+
+                    { items }
+
+                </ul>
+
+            </div>
+
+        );
+
+    };
 
     getItems = () => {
 
-        return this.props.items.map((value, index) => {
+        console.log("getItems");
+        //console.log(this.props.items);
 
-            return (
+        switch(this.props.type){
 
-                <li
-                    key={classes.Item + index}
-                    className={classes.Item}
-                    ref={this.itemRef}
-                >
+            case scrollerType.CARDS:
 
-                    <div className={classes.Content}>
-                        <h3>{index}</h3>
-                        <p>Hello, my friend</p>
-                        <button onClick={(event) => { console.log("click"); }}>Click me</button>
-                    </div>
+                return this.props.items.map((value, index) => {
 
-                </li>
+                    return (
 
-            );
+                        <li
+                            key={classes.Item + index}
+                            className={classes.Item}
+                            ref={this.itemRef}
+                            onClick={this.itemClickHandler}
+                        >
+
+                            { this.props.getItem(index) }
+
+                        </li>
+
+                    );
+
+                });
+
+            case scrollerType.IMG_ICONS:
+
+                const items = [];
+                let ref = null;
+
+                for(let i = 0; i < this.props.itemsLength; i++){
+
+                    ref = i === 0 ? this.itemRef : null;
+
+                    items.push((
+                        <li
+                            key={classes.Item + i}
+                            className={classes.Item}
+                            ref={ref}
+                            onClick={this.itemClickHandler}
+                        >
+
+                            { this.props.getItem(i, this.props.items) }
+
+                        </li>
+                    ));
+
+                }
+
+                return items;
+
+            default: console.error("Unknown scroller type == " + this.props.type);
+
+        }
+
+    };
+
+    _pointerDownHandler = (pageX, pageY) => {
+
+        this.calc.pageXStart = pageX;
+        this.calc.pageYStart = pageY;
+        this.calc.prevPageX = pageX;
+
+        this.listStyle = {};
+
+        const translateX = this.listRef.current.getBoundingClientRect().x - Math.abs(this.offsetX);
+
+        this.setState((prevState) => {
+
+            if(prevState.translateX !== translateX){
+
+                return {translateX: translateX};
+
+            }
+
+            return null;
 
         });
+
+        this.eventSorter.onTouchStart(pageX, pageY);
+
+    };
+
+    _pointerMoveHandler = (pageX, pageY) => {
+
+        if(this.isFirstMove){
+
+            const distX = Math.abs(pageX - this.calc.pageXStart);
+            const distY = Math.abs(pageY - this.calc.pageYStart);
+
+            //console.log("distX " + distX);
+            //console.log(event);
+
+            if(distY > distX)
+                this.isYScroll = true;
+
+            this.isFirstMove = false;
+
+        }
+
+        /*console.log(this.isYScroll);
+        console.log(this.isFirstMove);*/
+
+        if(!this.isYScroll){
+
+            this.eventSorter.onTouchMove(pageX);
+
+            this.setState((prevState) => {
+
+                let newTranslateX = this.calc.calcTranslateXOnMove(prevState.translateX, pageX);
+
+                newTranslateX = prevState.translateX + newTranslateX;
+
+                newTranslateX = MathF.clamp(newTranslateX, this.calc.minTranslateOffset - 50, this.calc.maxTranslateOffset + 50);
+
+                return {
+
+                    translateX: newTranslateX//parseFloat((prevState.translateX + translateX).toFixed(1))
+
+                }
+
+            });
+
+        }
+
+
+    };
+
+    _pointerUpHandler = (pageX, pageY) => {
+
+        if(!this.isYScroll){
+
+            this.listStyle = {
+                transition: 'transform 0.5s ease-out 0s',
+            };
+
+            //what event - move, swipe etc...
+            this.eventSorter.onTouchEnd(pageX);
+
+            this.eventType = this.eventSorter.whatEventType(pageY);
+
+            //console.log(eventType);
+
+            this.setState((prevState) => {
+
+                if(prevState.translateX > this.calc.maxTranslateOffset){
+
+                    return {
+
+                        translateX: this.calc.maxTranslateOffset
+
+                    }
+
+                }else if(prevState.translateX < this.calc.minTranslateOffset){
+
+                    return {
+
+                        translateX: this.calc.minTranslateOffset
+
+                    }
+
+                }else if(this.eventType === EVENT_TYPE.SWIPE || this.eventType === EVENT_TYPE.SWIPE_MOVE) {
+
+                    //console.log("swipe");
+                    //console.log(this.eventSorter.getSwipeSpeed());
+
+                    let newTranslateX = this.calc.calcTranslateXOnSwipe(this.eventSorter.getSwipeSpeed());
+
+                    newTranslateX = prevState.translateX + newTranslateX;
+
+                    newTranslateX = MathF.clamp(newTranslateX, this.calc.minTranslateOffset, this.calc.maxTranslateOffset);
+
+                    return {
+
+                        translateX: newTranslateX//parseFloat((prevState.translateX + translateX).toFixed(1))
+
+                    };
+
+                }
+
+            });
+
+        }
+
+        this.isYScroll = false;
+        this.isFirstMove = true;
 
     };
 
     _init = () => {
 
+        //const translateX = this.listRef.current.getBoundingClientRect().x;
+        this._setValues(this.props.itemsLength);
+
+        this.offsetX = this.containerRef.current.getBoundingClientRect().right;
+
+        const isNeedScroller = this._isNeedScroller(
+            this.calc.listWidth,
+            this.calc.itemWidth,
+            this.props.itemsLength);
+
+        console.log("isNeedScroller = " + isNeedScroller);
+
+        this.setState(prevState => {
+
+            if(prevState.isNeedScroller !== isNeedScroller){
+                return {
+                    isNeedScroller: isNeedScroller
+                };
+            }
+
+        });
+
+
+    };
+
+    _setValues = (itemsLength) => {
+
         let listWidth = this.listRef.current.getBoundingClientRect().width;
         let itemWidth = this.itemRef.current.getBoundingClientRect().width;
-
-     /*   if(!this._isNeedScroller(scrollerContainerDivWidth, scrollerItemWidth, this.props.numberOfItems)){
-
-            this.setState(prevState => {
-
-                if(prevState.isNeedScroller === true){
-                    return {
-                        isNeedScroller: false
-                    };
-                }
-
-            });
-
-            return;
-
-        }*/
 
         this.calc.setValues(
             listWidth,
             itemWidth,
-            this.numberOfItems
+            itemsLength
         );
+
+        console.log("_setValues");
+        console.log("itemsLength = " + itemsLength);
+        //console.log("listWidth = " + listWidth);
+        //console.log("itemWidth = " + itemWidth);
+
 
     };
 
-    _isNeedScroller = (scrollerContainerDivWidth, scrollerItemWidth, numberOfItems) => {
+    _isNeedScroller = (containerWidth, itemWidth, numberOfItems) => {
 
-        return scrollerItemWidth * numberOfItems - scrollerContainerDivWidth >= scrollerItemWidth * 0.5;
+        return itemWidth * numberOfItems - containerWidth > 0;
 
     };
 
@@ -245,7 +647,12 @@ class Scroller extends React.Component
 
 Scroller.propTypes = {
 
-    items: PropTypes.array.isRequired
+    //if type imgIcons - string with icons url
+    items: PropTypes.any.isRequired,
+    itemsLength: PropTypes.number.isRequired,
+    getItem: PropTypes.func.isRequired,
+    itemClickHandler: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired
  
 };
 

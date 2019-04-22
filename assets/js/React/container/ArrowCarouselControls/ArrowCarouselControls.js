@@ -5,9 +5,13 @@ import icons from "../../../../static/icons/ICONS.svg";
         
 class ArrowCarouselControls extends React.PureComponent
 {
+
    /* constructor(props){
         super(props);
     }*/
+
+   rightArrowClasses = [ classes.RightArrow, this.props.arrowSizeClass ].join(' ');
+   leftArrowClasses = [ classes.LeftArrow, this.props.arrowSizeClass ].join(' ');
     
     render(){
 
@@ -29,7 +33,7 @@ class ArrowCarouselControls extends React.PureComponent
             <div className={classes.ArrowCarouselControls}>
 
                 <button
-                    className={classes.LeftArrow}
+                    className={this.leftArrowClasses}
                     onClick={this.props.decreaseActiveIndex}
                     style={ leftArrowStyle }
                 >
@@ -46,7 +50,7 @@ class ArrowCarouselControls extends React.PureComponent
                 </button>
 
                 <button
-                    className={classes.RightArrow}
+                    className={this.rightArrowClasses}
                     onClick={this.props.increaseActiveIndex}
                     style={ rightArrowStyle }
                 >
@@ -74,7 +78,9 @@ ArrowCarouselControls.propTypes = {
     decreaseActiveIndex: PropTypes.func.isRequired,
 
     activeIndex: PropTypes.number.isRequired,
-    length: PropTypes.number.isRequired
+    length: PropTypes.number.isRequired,
+
+    arrowSizeClass: PropTypes.string.isRequired
 
 };
 

@@ -1,4 +1,3 @@
-import MathF from "../../../helper/MathF";
 
 class CalcTranslateX
 {
@@ -18,6 +17,7 @@ class CalcTranslateX
     //checkClickTranslateX = 0;
 
     pageXStart = 0;
+    pageYStart = 0;
     prevPageX = 0;
     pageX = 0;
     //startTranslateX = 0;
@@ -46,6 +46,12 @@ class CalcTranslateX
 
         this.maxTranslateOffset = 0;
         this.minTranslateOffset = this.listWidth - this.itemWidth * this.numberOfItems;
+
+    };
+
+    isOutsideOffset = (translateX) => {
+
+        return translateX > this.maxTranslateOffset || translateX < this.minTranslateOffset;
 
     };
 

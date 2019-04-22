@@ -3,7 +3,7 @@
 /.env.local
 /.env.local.php
 /.env.*.local
-/public/bundles/
+/public.local/bundles/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
@@ -19,4 +19,8 @@
 
 ###> Nodejs ###
 /node_modules
+
+/public.local/build
+/assets/static/sample-works
+
 ###< symfony/web-server-bundle ###

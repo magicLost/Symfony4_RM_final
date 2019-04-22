@@ -2,13 +2,15 @@
 
   //width: 100%;
 
-  //overflow: hidden;
+  overflow: hidden;
 
-  background-color: #fbfcfa;
+  touch-action: pan-y;
+
+  //background-color: #fbfcfa;
   //border-top: 1px solid black;
   //border-bottom: 1px solid black;
 
-  border: 1px solid #cdcdcd;
+  //border: 1px solid #cdcdcd;
 
 
   .ItemsList{
@@ -21,10 +23,32 @@
 
     .Item{
 
+      //min-height: 150px;
+
+      //padding: 10px 10px 20px 10px;
+
+      //text-align: center;
+
+      //background: linear-gradient(45deg, pink, cyan);
+
+      flex-grow: 0;
+      flex-shrink: 0;
+
+      //background: linear-gradient(45deg, #e5d4ff, #ffd7cf);
+
+
+
+
+    }
+
+    //padding: 20px;
+
+  /*  .Item{
+
       width: 200px;
       //min-height: 150px;
 
-      padding: 30px;
+      padding: 10px 10px 20px 10px;
 
       text-align: center;
 
@@ -47,7 +71,7 @@
 
       }
 
-    }
+    }*/
 
   }
 

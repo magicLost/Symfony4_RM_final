@@ -1,10 +1,19 @@
 .MainPresentation{
 
   background-color: #fafafa;
+  border-bottom: 1px solid black;
 
   .Arrows{
 
     display: none;
+
+    .ArrowsSize{
+
+      width: 100px;
+      height: 300px;
+
+    }
+
 
   }
 
@@ -110,6 +119,14 @@
       display: block;
       width: 100%;
 
+      .ArrowsSize{
+
+        width: 100px;
+        height: 300px;
+
+      }
+
+
     }
 
   }
@@ -128,6 +145,13 @@
 
       display: block;
       width: 100%;
+
+      .ArrowsSize{
+
+        width: 200px;
+        height: 400px;
+
+      }
 
     }
 

@@ -71,7 +71,6 @@ class MainPresentation extends React.PureComponent
                     activeIndex={this.state.activeIndex}
                     decreaseActiveIndex={this.decreaseActiveIndex}
                     increaseActiveIndex={this.increaseActiveIndex}
-                    setActiveIndex={this.setActiveIndex}
                 >
 
                     { items }
@@ -84,6 +83,7 @@ class MainPresentation extends React.PureComponent
                         decreaseActiveIndex={this.decreaseActiveIndex}
                         activeIndex={this.state.activeIndex}
                         length={this.props.carouselItems.length}
+                        arrowSizeClass={classes.ArrowsSize}
                     />
                 </div>
 
