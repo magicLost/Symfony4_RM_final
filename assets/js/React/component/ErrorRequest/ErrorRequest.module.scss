@@ -1,0 +1,31 @@
+.ErrorRequest{
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .ErrorButton{
+
+    border: none;
+    color: white;
+
+    margin-top: 5px;
+    background-color: #6ea3ff;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 5px;
+
+  }
+
+  .ErrorText{
+
+    font-size: 20px;
+    padding-bottom: 20px;
+
+  }
+
+}

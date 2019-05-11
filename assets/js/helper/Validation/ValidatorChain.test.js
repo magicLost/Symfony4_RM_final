@@ -1,4 +1,4 @@
-import Validation from './Validation';
+import ValidatorChain from './ValidatorChain';
 
 let validators = {
 
@@ -14,7 +14,7 @@ describe("Validation", () => {
 
     beforeEach(() => {
 
-        validation = new Validation();
+        validation = new ValidatorChain();
 
         validation.validator.regex = jest.fn().mockReturnValue('error1');
         validation.validator.isEmpty = jest.fn().mockReturnValue('');

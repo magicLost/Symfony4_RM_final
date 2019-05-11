@@ -1,0 +1,53 @@
+.Form{
+
+  //position: relative;
+
+  width: 300px;
+
+  margin: 0 auto 60px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .FormError{
+
+    padding: 10px;
+    color: red;
+    text-align: justify;
+    text-indent: 12px;
+
+  }
+
+}
+
+.SuccessText{
+
+  color: #ffdde1;
+  font: inherit;
+  text-align: center;
+}
+
+
+@media(min-width: 500px){
+
+  .Form{
+
+    width: 300px;
+    margin: 30px auto  60px;
+
+  }
+
+}
+
+@media(min-width: 1000px){
+
+  .Form{
+
+    width: 600px;
+    margin: 50px auto  60px;
+
+  }
+
+}
+

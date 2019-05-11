@@ -2,7 +2,7 @@
 class Validator
 {
 
-    isString = (value) => {
+    isString = (value, options) => {
 
         if(typeof value !== 'string'){
 
@@ -12,12 +12,16 @@ class Validator
 
     };
 
-    isEmpty = (value) => {
+    isEmpty = (value, options) => {
 
         this.isString(value);
 
         if(value.length === 0)
-            return "Как-то пусто...";
+            if(options && options.errorMessage){
+                return options.errorMessage;
+            }else{
+                return "Как-то пусто...";
+            }
         else
             return "";
 
@@ -38,13 +42,21 @@ class Validator
 
         if(options.min && length < options.min){
 
-            return "Коротковато будет.";
+            if(options.errorMessages && options.errorMessages.min){
+                return options.errorMessages.min;
+            }else{
+                return "Коротковато будет.";
+            }
 
         }
 
         if(options.max && length > options.max){
 
-            return "Длинновато будет.";
+            if(options.errorMessages && options.errorMessages.max){
+                return options.errorMessages.max;
+            }else{
+                return "Длинновато будет.";
+            }
 
         }
 
@@ -70,11 +82,19 @@ class Validator
 
         if(match === null){
 
-            return 'Использованы недопустимые символы...';
+            if(options.errorMessage){
+                return options.errorMessage;
+            }else{
+                return 'Использованы недопустимые символы...';
+            }
 
         }else if(match[0] !== value){
 
-            return 'Использованы недопустимые символы...';
+            if(options.errorMessage){
+                return options.errorMessage;
+            }else{
+                return 'Использованы недопустимые символы...';
+            }
 
         }
 

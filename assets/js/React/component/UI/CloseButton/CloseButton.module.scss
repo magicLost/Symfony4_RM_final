@@ -1,17 +1,23 @@
 .CloseButton{
 
+  display: block;
+
+  width: 70px;
+  height: 70px;
 
   border: none;
   background: transparent;
-  //border-radius: 60px;
 
-  align-self: center;
+  margin: 0 auto;
 
-
+  //align-self: center;
 
   cursor: pointer;
 
   .Svg{
+
+    //color: white;
+
     width: 30px;
     height: 30px;
 

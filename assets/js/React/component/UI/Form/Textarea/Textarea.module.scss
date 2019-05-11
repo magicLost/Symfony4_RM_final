@@ -1,0 +1,53 @@
+.TextareaWrapper{
+
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+
+  .Label{
+
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+    padding-left: 5px;
+
+  }
+
+  .Textarea{
+
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 7px;
+
+    background-color: white;
+    font: inherit;
+    padding: 6px 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+
+    resize: vertical;
+
+    &:focus{
+      outline: none;
+      background-color: #fff7e5;
+    }
+
+  }
+
+  .Textarea--Error{
+
+    border: 1px solid red;
+
+  }
+
+  .Error{
+
+    color: red;
+    padding-left: 8px;
+    padding-top: 3px;
+
+  }
+
+}

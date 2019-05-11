@@ -12,6 +12,11 @@ class MainPresentation extends React.PureComponent
         super(props);
     }*/
 
+    contolsFeatureConfig = {
+        mainDivStyle: { top: '-30px' },
+        mainItemStyle: { backgroundColor: "#fafafa" }
+    };
+
     state = {
 
         activeIndex: 0
@@ -96,10 +101,7 @@ class MainPresentation extends React.PureComponent
                         items={this.props.carouselControlsItems}
                         isShowTitle={true}
                         isMainItemText={false}
-                        config={{
-                            mainDivStyle: { top: '-50px' },
-                            mainItemStyle: { backgroundColor: "#fafafa" }
-                        }}
+                        config={this.contolsFeatureConfig}
                     />
                 </div>
 

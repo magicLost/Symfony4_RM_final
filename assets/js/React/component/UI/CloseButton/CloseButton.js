@@ -3,7 +3,7 @@ import classes from './CloseButton.module.scss';
 
 import icons from "./../../../../../static/icons/ICONS.svg";
         
-const closeButton = ({clickHandler}) => {
+const closeButton = ({clickHandler, color}) => {
     return (
 
         <button
@@ -12,6 +12,7 @@ const closeButton = ({clickHandler}) => {
         >
             <svg
                 className={classes.Svg}
+                style={{color: color}}
                 width={"5"}
                 height={"5"}
                 viewBox="0 0 1024 1024"

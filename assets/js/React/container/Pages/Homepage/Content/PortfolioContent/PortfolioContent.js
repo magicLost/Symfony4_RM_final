@@ -10,6 +10,7 @@ class PortfolioContent extends React.PureComponent
     }*/
     
     render(){
+
         return (
         
             <div className={classes.PortfolioContent}>
@@ -18,6 +19,7 @@ class PortfolioContent extends React.PureComponent
                     categories={this.props.categories}
                     icons={this.props.icons}
                     photos={this.props.photos}
+                    showFeedBackFormHandler={this.props.showFeedBackFormHandler}
                 />
 
             </div>
@@ -31,8 +33,10 @@ PortfolioContent.propTypes = {
     //hasControls: PropTypes.bool.isRequired,
     categories: PropTypes.array.isRequired,
     icons: PropTypes.array.isRequired,
-    photos: PropTypes.array.isRequired
- 
+    photos: PropTypes.array.isRequired,
+
+    showFeedBackFormHandler: PropTypes.func.isRequired
+
 };
 
 export default PortfolioContent;

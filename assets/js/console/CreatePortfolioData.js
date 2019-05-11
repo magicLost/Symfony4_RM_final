@@ -104,6 +104,7 @@ class CreatePortfolioData
 
                         this.photos[index].desc.push({
                             title: ("Описание-" + index + "-" + i),
+                            id: nameDir + "/" + fileName,
                             text: "Бла, бла, бла... Бла, бла, бла... Бла, бла, бла... Бла, бла, бла... Бла, бла, бла... Бла, бла, бла...",
                             price: "5 000 000 $"
                         });
@@ -260,6 +261,7 @@ class CreatePortfolioData
                 this.content += `
                     {
                         title: "${desc.title}",
+                        id: "${desc.id}",
                         text: "${desc.text}",
                         price: "${desc.price}"
                     },

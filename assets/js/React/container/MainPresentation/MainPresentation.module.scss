@@ -1,6 +1,7 @@
 .MainPresentation{
 
   background-color: #fafafa;
+  //background: linear-gradient(45deg, #fff2ef, #f3eaff);
   border-bottom: 1px solid black;
 
   .Arrows{
@@ -27,8 +28,8 @@
   .Item{
 
     width: 100%;
-    min-width: 325px;
-    min-height: 500px;
+    min-width: 300px;
+    min-height: 300px;
 
     text-align: center;
 
@@ -44,6 +45,7 @@
       margin: auto;
 
       padding-top: 20px;
+      padding-bottom: 60px;
 
       .Paragraph{
 
@@ -87,55 +89,6 @@
 
 }
 
-@media(min-width: 500px){
-
-
-  .MainPresentation{
-
-    .Arrows{
-
-      display: none;
-
-    }
-
-    .Item{
-
-      min-height: 400px;
-
-    }
-
-
-  }
-
-
-}
-
-@media(min-width: 700px){
-
-  .MainPresentation{
-
-    .Arrows{
-
-      display: block;
-      width: 100%;
-
-      .ArrowsSize{
-
-        width: 100px;
-        height: 300px;
-
-      }
-
-
-    }
-
-  }
-
-
-
-
-}
-
 @media(min-width: 1000px){
 
 
@@ -148,7 +101,7 @@
 
       .ArrowsSize{
 
-        width: 200px;
+        width: 100px;
         height: 400px;
 
       }

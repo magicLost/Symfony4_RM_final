@@ -7,15 +7,25 @@ import ArrowCarouselControls from "../ArrowCarouselControls/ArrowCarouselControl
 import Scroller, { scrollerType } from "../Scroller/Scroller";
 import Img from "../../component/UI/Img/Img";
 import CarouselOpacity from "../Carousel/CarouselOpacity/CarouselOpacity";
+import FeedBackModalForm from "../FeedBackModalForm/FeedBackModalForm";
+import {elements} from "../../../data/feedback_form_data";
         
 class PortfolioSlider extends React.PureComponent
 {
+
+    controlsFeatureConfig = {
+        mainDivStyle: { top: '30px' },
+        mainItemStyle: { backgroundColor: "#fff" }
+    };
 
     state = {
 
         categoryIndex: 0,
         photoIndex: 0,
-        descriptionId: 0
+        descriptionId: 0,
+
+        isFeedBackFormCreated: false,
+        isShowFeedBackForm: false
 
     };
 
@@ -89,6 +99,20 @@ class PortfolioSlider extends React.PureComponent
 
     };
 
+    wantTheSameButtonClickHandler = (event) => {
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        const id = this.props.photos[this.state.categoryIndex].desc[this.state.photoIndex].id;
+
+        this.props.showFeedBackFormHandler(
+            [
+                { name: "photoId", value: id }
+            ]
+        );
+
+    };
 
     render(){
 
@@ -148,10 +172,7 @@ class PortfolioSlider extends React.PureComponent
                         items={this.props.categories}
                         isShowTitle={true}
                         isMainItemText={false}
-                        config={{
-                            mainDivStyle: { top: '30px' },
-                            mainItemStyle: { backgroundColor: "#fff" }
-                        }}
+                        config={this.controlsFeatureConfig}
                     />
 
                 </div>
@@ -180,9 +201,11 @@ class PortfolioSlider extends React.PureComponent
                         Примерная стоимость: { desc.price }
                     </p>
 
-                    <a className={classes.Link} href="#">Хочу такую.</a>
+                    <button className={classes.wantTheSameButton} onClick={this.wantTheSameButtonClickHandler} >Хочу такую.</button>
 
                 </div>
+
+
 
             </div>
             
@@ -203,33 +226,6 @@ class PortfolioSlider extends React.PureComponent
         );
 
     };
-
-   /* getCarouselItems = () => {
-
-        const activeIndex = this.state.photoIndex;
-
-        return this.props.photos[this.state.categoryIndex]["300"].map((value, index) => {
-
-            return (
-
-                <li
-                    key={classes.Item + index}
-                    className={classes.Item}
-                >
-
-                    <Img
-                        isActive={ index === activeIndex }
-                        src300={value}
-                        src600={this.props.photos[this.state.categoryIndex]["600"][index]}
-                    />
-
-                </li>
-
-            );
-
-        });
-
-    };*/
 
     getScrollerItem = (index, imageBgSrc) => {
 
@@ -252,39 +248,10 @@ class PortfolioSlider extends React.PureComponent
                     style={style}
                 >
 
-
-
                 </div>
             </div>
 
         );
-
-        /*return items.map((value, index) => {
-
-            return (
-
-                <li
-                    key={classes.Item + index}
-                    className={classes.Item}
-                    ref={itemRef}
-                    data-index={index}
-                    onClick={this.scrollerItemClickHandler}
-                >
-
-                    <div
-                        className={classes.Content}
-                        data-index={index}
-                    >
-
-                        <h3  data-index={index}>{index}</h3>
-
-                    </div>
-
-                </li>
-
-            );
-
-        });*/
 
     };
 
@@ -303,7 +270,9 @@ PortfolioSlider.propTypes = {
     //hasControls: PropTypes.bool.isRequired,
     categories: PropTypes.array.isRequired,
     icons: PropTypes.array.isRequired,
-    photos: PropTypes.array.isRequired
+    photos: PropTypes.array.isRequired,
+
+    showFeedBackFormHandler: PropTypes.func.isRequired
  
 };
 

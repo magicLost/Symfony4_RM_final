@@ -40,6 +40,7 @@ class MobileMenu extends React.PureComponent
                     <div className={classes.Menu}>
 
                         <CloseButton
+                            color={"black"}
                             clickHandler={this.props.closeButtonClickHandler}
                         />
 

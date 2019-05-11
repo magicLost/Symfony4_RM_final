@@ -350,7 +350,7 @@ class ControlsFeature extends React.PureComponent
     
     render(){
 
-        //console.log("controls feature render");
+        console.log("controls feature render " + this.props.formType );
 
         let title = '';
         let bgStyle = null;

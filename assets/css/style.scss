@@ -2,3 +2,33 @@
   margin: 0;
   padding: 0;
 }
+
+main{
+  padding-top: 55px;
+}
+
+body{
+
+  min-width: 300px;
+
+  font-family: Arial, sans-serif;
+  line-height: 24px;
+
+
+}
+
+@media(min-width: 700px) {
+
+  main{
+    padding-top: 65px;
+  }
+
+}
+
+@media(min-width: 1000px) {
+
+  main{
+    padding-top: 75px;
+  }
+
+}

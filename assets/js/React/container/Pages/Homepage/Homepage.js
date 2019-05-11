@@ -9,13 +9,22 @@ import Header from "../Partial/Header/Header";
 import MainContent from "./Content/MainContent/MainContent";
 import Contacts from "../Partial/Contacts/Contacts";
 import PortfolioContent from "./Content/PortfolioContent/PortfolioContent";
+import FeedBackModalForm from "../../FeedBackModalForm/FeedBackModalForm";
 
-        
+import { elements } from "../../../../data/feedback_form_data";
+
+
 class Homepage extends React.PureComponent
 {
    /* constructor(props){
         super(props);
     }*/
+
+    html = null;
+    body = null;
+
+    feedBackFormUrl = '';
+    //wantTheSameFeedBackFormUrl = '';
 
     mainSectionClasses = classes.Section;
     portfolioSectionClasses = classes.Section;
@@ -24,60 +33,35 @@ class Homepage extends React.PureComponent
 
     state = {
 
-        activeSectionIndex: 0,
-
-        isMainMenuCreated: false,
-        isCallMeFormCreated: false,
-
-        isShowMainMenu: false,
-        isShowCallMeForm: false,
+        activeSectionIndex: 1,
 
         isPortfolioSectionCreated: false,
-        isContactsSectionCreated: false
+        isContactsSectionCreated: false,
+
+
+        isFeedBackFormCreated: false,
+        isShowFeedBackForm: false,
+        feedBackFormHiddenFields: [],
+        feedBackFormUrl: ''
 
     };
 
-    mainMenuButtonClickHandler = (event) => {
+    constructor(props){
 
-        event.preventDefault();
-        event.stopPropagation();
+        super(props);
 
-        console.log("mainMenuButtonClickHandler");
+        //this.mainFeedBackFormUrl = props.mountNode.dataset.mainFeedbackformUrl;
+        //this.wantTheSameFeedBackFormUrl = props.mountNode.dataset.wantthesameFeedbackformUrl;
+        this.feedBackFormUrl = props.mountNode.dataset.feedbackformUrl;
 
-        this.setState({
+        this.html = document.querySelector("html");
+        this.body = document.body;
 
-            isMainMenuCreated: true,
-            isShowMainMenu: true
+        /*console.log("mainFeedBackFormUrl = " + this.mainFeedBackFormUrl);
+        console.log("wantTheSameFeedBackFormUrl = " + this.wantTheSameFeedBackFormUrl);*/
 
-        });
+    }
 
-        document.body.classList.add(commonClasses.StopScrolling);
-
-    };
-
-    mainMenuCloseButtonClickHandler = (event) => {
-
-        if(event){
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        this.setState({
-            isShowMainMenu: false
-        });
-
-        document.body.classList.remove(commonClasses.StopScrolling);
-
-    };
-
-    callMeButtonClickHandler = (event) => {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        console.log("callMeButtonClickHandler");
-
-    };
 
     toolBarButtonClick = (index) => {
 
@@ -89,7 +73,7 @@ class Homepage extends React.PureComponent
 
                 const newState = {};
 
-                if(index === 1 && !prevState.isPortfolioSectionCreated){
+                if(index === 0 && !prevState.isPortfolioSectionCreated){
 
                     newState.isPortfolioSectionCreated = true;
 
@@ -105,6 +89,8 @@ class Homepage extends React.PureComponent
 
                 newState.activeSectionIndex = index;
 
+                this.html.scrollTop = 0;
+
                 return newState;
             }
 
@@ -114,6 +100,129 @@ class Homepage extends React.PureComponent
 
     };
 
+    increaseSectionIndex = (event) => {
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        this.setState((prevState) => {
+
+            if(prevState.activeSectionIndex < this.props.toolbarItems.length - 1){
+
+                const newState = {};
+
+                const newIndex = prevState.activeSectionIndex + 1;
+
+                if(newIndex === 2 && !prevState.isContactsSectionCreated){
+
+                    newState.isContactsSectionCreated = true;
+
+                }
+
+                this._setClassesByActiveIndex(newIndex, prevState.activeSectionIndex);
+
+                newState.activeSectionIndex = newIndex;
+
+                this.html.scrollTop = 0;
+
+                return newState;
+
+            }
+
+            return null;
+
+        });
+
+    };
+
+    decreaseSectionIndex = (event) => {
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        /*console.log(document.querySelector('main').scrollTop);
+        console.log(document.querySelector('div.' + classes.Homepage).scrollTop);
+        console.log(document.querySelector('#homepage_mount_node').scrollTop);*/
+
+        this.setState((prevState) => {
+
+            if(prevState.activeSectionIndex > 0){
+
+                const newState = {};
+
+                const newIndex = prevState.activeSectionIndex - 1;
+
+                if(newIndex === 0 && !prevState.isPortfolioSectionCreated){
+
+                    newState.isPortfolioSectionCreated = true;
+
+                }
+
+                this._setClassesByActiveIndex(newIndex, prevState.activeSectionIndex);
+
+                newState.activeSectionIndex = newIndex;
+
+                this.html.scrollTop = 0;
+
+                return newState;
+
+            }
+
+            return null;
+
+        });
+
+    };
+
+
+    showMainFeedBackForm = (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        console.log("callMeButtonClickHandler");
+
+        this.setState({
+
+            isFeedBackFormCreated: true,
+            isShowFeedBackForm: true,
+            feedBackFormUrl: this.feedBackFormUrl
+
+        });
+
+        this.body.classList.add(commonClasses.StopScrolling);
+
+    };
+
+    showPortfolioFeedBackForm = (hiddenFields) => {
+
+        console.log("callMeButtonClickHandler");
+
+        this.setState({
+
+            isFeedBackFormCreated: true,
+            isShowFeedBackForm: true,
+            feedBackFormHiddenFields: hiddenFields,
+            feedBackFormUrl: this.feedBackFormUrl
+
+        });
+
+        this.body.classList.add(commonClasses.StopScrolling);
+
+    };
+
+    feedBackFormCloseButtonClickHandler = () => {
+
+        console.log("feedBackFormCloseButtonClickHandler");
+
+        this.setState({
+            isShowFeedBackForm: false,
+            feedBackFormHiddenFields: []
+        });
+
+        document.body.classList.remove(commonClasses.StopScrolling);
+
+    };
 
     // mainMenuItems, toolbarItems, mainMenuButtonClickHandler, mainMenuCloseButtonClickHandler, callMeButtonClickHandler
 
@@ -126,22 +235,37 @@ class Homepage extends React.PureComponent
             <div className={classes.Homepage}>
 
                 <Header
+
                     mainMenuItems={this.props.mainMenuItems}
+
                     toolbarItems={this.props.toolbarItems}
-                    mainMenuButtonClickHandler={this.mainMenuButtonClickHandler}
-                    mainMenuCloseButtonClickHandler={this.mainMenuCloseButtonClickHandler}
-                    callMeButtonClickHandler={ this.callMeButtonClickHandler }
                     toolBarItemClick={ this.toolBarButtonClick }
 
-                    isMainMenuCreated={this.state.isMainMenuCreated}
-                    isShowMainMenu={this.state.isShowMainMenu}
+                    activeSectionIndex={this.state.activeSectionIndex}
+                    increaseSectionIndex={this.increaseSectionIndex}
+                    decreaseSectionIndex={this.decreaseSectionIndex}
+                    showFeedBackFormButtonClickHandler={this.showMainFeedBackForm}
+
                 />
+
+                {
+                    this.state.isFeedBackFormCreated &&
+                    <div className={classes.FeedBackForm} style={ this.state.isShowFeedBackForm ? null : {display: "none"} }>
+                        <FeedBackModalForm
+                            formElements={elements}
+                            url={this.state.feedBackFormUrl}
+                            submitButtonValue={"Отправить"}
+                            closeButtonClickHandler={this.feedBackFormCloseButtonClickHandler}
+                            hiddenFields={this.state.feedBackFormHiddenFields}
+                        />
+                    </div>
+                }
 
                 <main>
 
                     <div
                         className={this.mainSectionClasses}
-                        style={(this.state.activeSectionIndex !== 0) ? { display: 'none'} : null}
+                        style={(this.state.activeSectionIndex !== 1) ? { display: 'none'} : null}
                     >
                         <MainContent
                             mainPresentationItems={this.props.mainPresentationItems}
@@ -152,12 +276,13 @@ class Homepage extends React.PureComponent
                     { this.state.isPortfolioSectionCreated &&
                         <div
                             className={this.portfolioSectionClasses}
-                            style={(this.state.activeSectionIndex !== 1) ? { display: 'none'} : null}
+                            style={(this.state.activeSectionIndex !== 0) ? { display: 'none'} : null}
                         >
                             <PortfolioContent
                                 categories={this.props.portfolioCategories}
                                 icons={this.props.portfolioCategoriesIcons}
                                 photos={this.props.portfolioPhotos}
+                                showFeedBackFormHandler={this.showPortfolioFeedBackForm}
                             />
                         </div>
                     }
@@ -187,9 +312,9 @@ class Homepage extends React.PureComponent
 
         switch(activeIndex){
 
-            case 0:
+            case 1:
 
-                if(prevIndex === 1){
+                if(prevIndex === 0){
 
                     this.mainSectionClasses = [ classes.Section, classes.AnimationMoveFromRightToCenter ].join(' ');
                     this.portfolioSectionClasses = classes.Section;
@@ -205,7 +330,7 @@ class Homepage extends React.PureComponent
 
                 break;
 
-            case 1:
+            case 0:
 
                 this.mainSectionClasses = classes.Section;
                 this.portfolioSectionClasses = [ classes.Section, classes.AnimationMoveFromLeftToCenter ].join(' ');
@@ -226,6 +351,8 @@ class Homepage extends React.PureComponent
 }
 
 Homepage.propTypes = {
+
+    mountNode: PropTypes.object.isRequired,
 
     toolbarItems: PropTypes.array.isRequired,
 

@@ -1,5 +1,5 @@
 
-export const toolbarItemsArray = ['Главное', "Портфолио", "Контакты"];
+export const toolbarItemsArray = ['Портфолио', "Главное", "Контакты"];
 
 export const mainPresentationItems = [
 

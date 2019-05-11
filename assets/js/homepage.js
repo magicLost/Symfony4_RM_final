@@ -14,6 +14,9 @@ const mountNode =  document.getElementById('homepage_mount_node');
 
 ReactDOM.render(
     <Homepage
+
+        mountNode={mountNode}
+
         toolbarItems={toolbarItemsArray}
 
         mainMenuItems={mainMenuItems}
@@ -23,6 +26,7 @@ ReactDOM.render(
 
         portfolioCategories={categories}
         portfolioCategoriesIcons={icons}
+        //portfolioPhotos={photos}
         portfolioPhotos={photos}
     />,
     mountNode
