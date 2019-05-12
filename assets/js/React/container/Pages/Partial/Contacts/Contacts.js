@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './Contacts.module.scss';
 import PropTypes from 'prop-types';
-//import icons from '../../../../../../static/icons/ICONS.svg';
+//import map from '../../../../../../static/map/RM_named_map.png';
 import ListSvg, {svgType} from "../../../../component/UI/ListSvg/ListSvg";
 import ListSvgWithText from "../../../../component/UI/ListSvgWithText/ListSvgWithText";
 import { social, contacts } from "../../../../../data/contacts_data";

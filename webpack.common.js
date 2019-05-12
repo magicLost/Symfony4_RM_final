@@ -8,7 +8,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
     entry: {
         homepage: "./assets/js/homepage.js",
-        largeFormatPrint: "./assets/js/largeFormatPrint.js"
+        tantamaresk: "./assets/js/tantamaresk.js"
     },
     output: {
         path: path.resolve(__dirname , "public.local", "build"),
@@ -76,6 +76,19 @@ module.exports = {
                 ]
             },
         ]
+    },
+
+    optimization: {
+        splitChunks: {
+            chunks: "all"
+            /*cacheGroups: {
+                commons: {
+                    name: "commons",
+                    chunks: "initial",
+                    minChunks: 2
+                }
+            }*/
+        }
     },
 
     plugins: [

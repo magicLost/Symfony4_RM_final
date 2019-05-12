@@ -4,6 +4,9 @@
 
 {% block title %}Реклама-маркет. Производство наружной рекламы.{% endblock title %}
 
+
+
+
 {% block body %}
 
     <div id="homepage_mount_node" data-feedbackform-url="{{ path('feedback') }}"   ></div>
@@ -12,8 +15,12 @@
 {% endblock body %}
 
 
+
+
 {% block javascripts %}
 
+    <script type="text/javascript" src="{{ asset('build/vendors~homepage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('build/vendors~homepage~largeFormatPrint.js') }}"></script>
     <script type="text/javascript" src="{{ asset('build/homepage.js') }}"></script>
 
 {% endblock javascripts %}
