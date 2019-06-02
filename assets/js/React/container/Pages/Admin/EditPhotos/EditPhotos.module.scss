@@ -1,0 +1,26 @@
+.EditPhotos{
+
+  padding-top: 50px;
+
+  .CategorySection{
+
+    padding: 15px;
+
+    .Photos{
+
+      padding: 10px;
+      background: linear-gradient(45deg, #ffeee9, #eaebff);
+      border-radius: 10px;
+
+
+      .Img{
+        width: 150px;
+        height: 150px;
+        background-color: #e3ffe5;
+      }
+
+    }
+
+  }
+
+}

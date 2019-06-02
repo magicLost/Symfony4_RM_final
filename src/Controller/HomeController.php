@@ -58,8 +58,8 @@ class HomeController extends AbstractController
             return $this->json([
                 'result' => "error",
                 //"error" => $form->getErrors(true)
-                //"error" => "Server do not want to speak..."
-                "error" => [ "js_token" => $post["token"], "token" => $token ]
+                "error" => "Server do not want to speak..."
+                //"error" => [ "js_token" => $post["token"], "token" => $token ]
             ]);
 
         }

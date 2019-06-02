@@ -1,7 +1,9 @@
 .ErrorRequest{
 
-  width: 100%;
-  height: 100%;
+  //width: 100%;
+  //height: 100%;
+
+  padding: 30px;
 
   display: flex;
   align-items: center;
@@ -10,14 +12,15 @@
 
   .ErrorButton{
 
-    border: none;
-    color: white;
-
     margin-top: 5px;
-    background-color: #6ea3ff;
+
+    border: 2px solid black;
+    border-radius: 10px;
+
+    background: transparent;
+
     font-weight: bold;
-    padding: 8px;
-    border-radius: 5px;
+    padding: 10px 30px;
 
   }
 

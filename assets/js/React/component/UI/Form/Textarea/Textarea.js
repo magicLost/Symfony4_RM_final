@@ -14,7 +14,8 @@ class Textarea extends React.Component
         event.preventDefault();
         event.stopPropagation();
 
-        this.props.changeHandler(this.props.elementAttrs.name, event.target.value);
+        //this.props.changeHandler(this.props.elementAttrs.name, event.target.value);
+        this.props.changeHandler(event.target);
 
     };
 

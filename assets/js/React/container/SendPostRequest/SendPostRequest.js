@@ -57,12 +57,17 @@ class SendPostRequest extends React.PureComponent
         console.log("send request");
         console.log(this.props.data);
 
+        let contentTypeHeader = {'Content-Type': 'multipart/form-data'};
+        const data = this.prepareDataForRequest(this.props.data);
+
+        console.log(data.values());
+
         axios({
 
             method: "post",
             url: this.props.url,
-            data: this.props.data ,
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            data: data ,
+            headers: contentTypeHeader,
             cancelToken: this.source.token
 
         }).then((response) => {
@@ -106,7 +111,7 @@ class SendPostRequest extends React.PureComponent
                 { this.state.requestError && <ErrorRequest
                                                     errorMessage={this.state.requestError}
                                                     onClickHandler={this.tryAgainRequestHandler}
-                                                    textStyle={{color: "white"}}
+                                                    textStyle={{color: "black"}}
                                                 />
                 }
 
@@ -115,6 +120,34 @@ class SendPostRequest extends React.PureComponent
             </div>
             
         );
+    }
+
+    prepareDataForRequest = () => {
+
+        const formData = new FormData();
+
+        for(let key in this.props.data){
+
+            if(this.props.data[key] instanceof FileList){
+
+                console.log("append file - " + key);
+                console.log(this.props.data[key][0]);
+
+                formData.append(key, this.props.data[key][0]);
+
+            }else{
+
+                console.log("append something " + key);
+                console.log(this.props.data[key]);
+
+                formData.append(key, this.props.data[key]);
+
+            }
+
+        }
+
+        return formData;
+
     }
 
 }

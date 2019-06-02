@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './SubmitButton.module.scss';
         
-const submitButton = ({name, color, onClick = null}) => {
+const submitButton = ({title, color, onClick = null}) => {
 
     return (
 

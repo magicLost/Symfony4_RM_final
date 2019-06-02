@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Редактирование фоток.{% endblock title %}
+
+
+
+
+{% block body %}
+
+    <div
+            id="adminPhoto_mount_node"
+            data-categories="{{ categories }}"
+            data-photo-sizes="{{ photo_sizes }}"
+            data-photos="{{ photos }}"
+            data-add-photo-form-url="{{ path("admin_add_photos") }}"
+    ></div>
+
+
+{% endblock body %}
+
+
+
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="{{ asset('build/vendors~adminPhoto~homepage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('build/adminPhoto~homepage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('build/adminPhoto.js') }}"></script>
+
+{% endblock javascripts %}

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class MineRegex extends Constraint
 {
-    public $message = "Uncorrect characters";
+    public $message = "Incorrect characters";
     public $pattern = "/[a-zA-Z0-9-_]*/";
 
     public function validatedBy()

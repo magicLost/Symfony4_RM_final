@@ -36,9 +36,14 @@ class ValidatorChain
             for(let validatorName in validators){
 
                 switch(validatorName){
+
                     case 'regex': error = this.validator.regex(value, validators[validatorName]);break;
                     case 'length': error = this.validator.length(value, validators[validatorName]);break;
                     case 'required': error = this.validator.isEmpty(value, validators[validatorName]);break;
+
+                    case 'fileType': error = this.validator.fileType(value, validators[validatorName]);break;
+                    case 'fileSize': error = this.validator.fileSize(value, validators[validatorName]);break;
+                    case 'fileNameRegex': error = this.validator.fileNameRegex(value, validators[validatorName]);break;
 
                     default: console.error("Bad validator name  - " + validatorName);
                 }

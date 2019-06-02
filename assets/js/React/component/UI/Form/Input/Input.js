@@ -19,7 +19,8 @@ class Input extends React.PureComponent
         event.preventDefault();
         event.stopPropagation();
 
-        this.props.changeHandler(this.props.elementAttrs.name, event.target.value);
+        //this.props.changeHandler(this.props.elementAttrs.name, event.target.value);
+        this.props.changeHandler(event.target);
 
     };
 

@@ -1,0 +1,92 @@
+.ZForm{
+
+  width: 100%;
+  min-width: 300px;
+  height: 100%;
+
+  overflow-y: auto;
+
+
+  .Form{
+
+    width: 100%;
+
+    .ZFormElements{
+
+      width: 100%;
+
+      margin: 0 auto 60px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      .FormError{
+
+        padding: 10px;
+        color: red;
+        text-align: justify;
+        text-indent: 12px;
+
+      }
+
+    }
+
+
+  }
+
+  .SendRequest{
+
+    padding-top: 50px;
+
+  }
+
+  .Success{
+
+    min-width: 300px;
+    margin: auto;
+
+    padding: 30px;
+
+    text-align: center;
+
+    p{
+      padding-bottom: 20px;
+    }
+
+    button{
+
+      font-weight: bold;
+
+      padding: 10px 30px;
+
+      border: 2px solid black;
+      border-radius: 10px;
+
+      background: transparent;
+
+      margin: 0 auto;
+
+      cursor: pointer;
+
+    }
+
+  }
+
+}
+
+@media(min-width: 350px){
+
+  .ZForm{
+
+    .Form{
+
+      padding-right: 3%;
+      padding-left: 3%;
+      width: 94%;
+
+    }
+
+  }
+
+}

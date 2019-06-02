@@ -1,0 +1,51 @@
+.FileInput{
+
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+
+  .Label{
+
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    padding-left: 5px;
+
+  }
+
+  .Input{
+
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 7px;
+
+    background-color: white;
+    font: inherit;
+    padding: 6px 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:focus{
+      outline: none;
+      background-color: #fff7e5;
+    }
+
+  }
+
+  .Input--Error{
+
+    border: 1px solid red;
+
+  }
+
+  .Error{
+
+    color: red;
+    padding-left: 8px;
+    padding-top: 3px;
+
+  }
+
+
+}

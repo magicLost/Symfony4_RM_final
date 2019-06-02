@@ -2,19 +2,26 @@
 class Validator
 {
 
-    isString = (value, options) => {
+    isString = (value) => {
 
-        if(typeof value !== 'string'){
-
-            console.error("We need string...");
-
-        }
+        return typeof value === 'string';
 
     };
 
+    isFileList = (value) => {
+
+        return typeof value === 'object' && value instanceof FileList;
+
+    };
+
+
+
     isEmpty = (value, options) => {
 
-        this.isString(value);
+        if(!this.isString(value)){
+            console.error("We need string.");
+            return '';
+        }
 
         if(value.length === 0)
             if(options && options.errorMessage){
@@ -29,7 +36,10 @@ class Validator
 
     length = (value, options) => {
 
-        this.isString(value);
+        if(!this.isString(value)){
+            console.error("We need string.");
+            return '';
+        }
 
         if(!options){
 
@@ -61,6 +71,65 @@ class Validator
         }
 
         return "";
+
+    };
+
+    //options - { errorMessage: '', fileTypes: [] }
+    fileType = (fileList, options) => {
+
+        if(!this.isFileList(fileList)){
+
+            console.error("We need FileList.");
+            return '';
+
+        }
+
+        if(fileList.length === 0) return '';
+
+        for(let i = 0; i < options.fileTypes.length; i++) {
+            if(fileList[0].type === options.fileTypes[i]) {
+                return '';
+            }
+        }
+
+        return options.errorMessage;
+
+    };
+
+    //options - { errorMessage: '', maxSize: 5 * 1048576 }
+    fileSize = (fileList, options) => {
+
+        if(!this.isFileList(fileList)){
+
+            console.error("We need FileList.");
+            return '';
+
+        }
+
+        if(fileList.length === 0) return '';
+
+        if(fileList[0].size > options.maxSize){
+
+            return options.errorMessage;
+
+        }
+
+        return '';
+
+    };
+
+    fileNameRegex = (fileList, options) => {
+
+        if(!this.isFileList(fileList)){
+
+            console.error("We need FileList.");
+            return '';
+
+        }
+
+        if(fileList.length === 0) return '';
+
+        return this.regex(fileList[0].name, options);
 
     };
 

@@ -1,0 +1,22 @@
+.Switcher{
+
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  .Title{
+
+    width: 300px;
+
+  }
+
+  .Button{
+
+    padding: 5px;
+    border-radius: 10px;
+    background: transparent;
+    border: solid 2px black;
+
+  }
+
+}
