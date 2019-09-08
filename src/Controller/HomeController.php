@@ -34,7 +34,7 @@ class HomeController extends AbstractController
         $post = json_decode(file_get_contents('php://input'), true);
 
         //CHECK TOKEN
-        if(!isset($post["token"]) || $post["token"] === ''){
+    /*     if(!isset($post["token"]) || $post["token"] === ''){
 
             //Todo logging
 
@@ -62,17 +62,17 @@ class HomeController extends AbstractController
                 //"error" => [ "js_token" => $post["token"], "token" => $token ]
             ]);
 
-        }
+        } */
 
         //FORM VALIDATION
-        $form->submit($post);
+     /*    $form->submit($post);
 
         if($form->isSubmitted()){
 
             if(!$form->isValid()){
 
                 //send email
-                if(isset($post["phone_id"])){
+                if(isset($post["photo"])){
 
 
 
@@ -98,7 +98,9 @@ class HomeController extends AbstractController
 
             return $this->json([ 'result' => "error", "error" => "Server do not answer..."]);
 
-        }
+        } */
+
+        return $this->json([ 'result' => "SUCCESS"]);
 
     }
 

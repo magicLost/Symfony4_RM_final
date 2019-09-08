@@ -3,11 +3,11 @@ import { configure, shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 import React from 'react';
-import ZFormElements from "./ZFormElements";
+import FeedBackForm from "./FeedBackForm";
 
 configure({adapter: new Adapter()});
 
-describe("ZFormElements", () => {
+describe("FeedBackForm", () => {
 
     let wrapper = null;
 
@@ -15,7 +15,7 @@ describe("ZFormElements", () => {
     
         beforeEach(() => {
         
-            wrapper = shallow(<ZFormElements />);
+            wrapper = shallow(<FeedBackForm />);
         
         });
     
@@ -35,7 +35,7 @@ describe("ZFormElements", () => {
     
         beforeEach(() => {
         
-            wrapper = shallow(<ZFormElements />);
+            wrapper = shallow(<FeedBackForm />);
         
         });
     

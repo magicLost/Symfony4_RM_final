@@ -8,8 +8,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
     entry: {
         homepage: "./assets/js/homepage.js",
-        tantamaresk: "./assets/js/tantamaresk.js",
-        adminPhoto: "./assets/js/adminPhoto.js"
+        //tantamaresk: "./assets/js/tantamaresk.js",
+       // adminPhoto: "./assets/js/adminPhoto.js"
     },
     output: {
         path: path.resolve(__dirname , "public.local", "build"),

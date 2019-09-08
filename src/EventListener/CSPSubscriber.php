@@ -20,7 +20,8 @@ class CSPSubscriber implements EventSubscriberInterface
         //report-uri: https://example.com/csp/report;
         $mineHeaders = [
             "Content-Security-Policy-Report-Only" =>
-                "default-src 'self';" . $scriptDirectory . $styleDirectory . " img-src 'self';  object-src none; frame-src none; font-src none"
+                "default-src 'self';" . $scriptDirectory . $styleDirectory . " img-src 'self';  object-src none; frame-src none; font-src none",
+            "Access-Control-Allow-Origin" => "*"
         ];
 
 

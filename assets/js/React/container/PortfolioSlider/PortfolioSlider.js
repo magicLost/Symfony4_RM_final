@@ -2,13 +2,10 @@ import React from 'react';
 import classes from './PortfolioSlider.module.scss';
 import PropTypes from 'prop-types';
 import ControlsFeature, {formType, type} from "../ControlsFeature/ControlsFeature";
-import CarouselTranslate from "../Carousel/CarouselTranslate/CarouselTranslate";
 import ArrowCarouselControls from "../ArrowCarouselControls/ArrowCarouselControls";
 import Scroller, { scrollerType } from "../Scroller/Scroller";
 import Img from "../../component/UI/Img/Img";
 import CarouselOpacity from "../Carousel/CarouselOpacity/CarouselOpacity";
-import FeedBackModalForm from "../FeedBackModalForm/FeedBackModalForm";
-import {elements} from "../../../data/feedback_form_data";
         
 class PortfolioSlider extends React.PureComponent
 {

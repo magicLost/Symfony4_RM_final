@@ -2,24 +2,24 @@ import React from 'react';
 import classes from './ZForm.module.scss';
 import PropTypes from 'prop-types';
 
-import CloseButton from "../../component/UI/CloseButton/CloseButton";
-import SendPostRequest from "../SendPostRequest/SendPostRequest";
+/*import CloseButton from "../../component/UI/CloseButton/CloseButton";
+import SendPostRequest from "../SendPostRequest/SendPostRequest";*/
 import ZRenderFormElements from "./ZRenderFormElements/ZRenderFormElements";
 import SubmitButton from "../../component/UI/Form/SubmitButton/SubmitButton";
 import ValidatorChain from "../../../helper/Validation/ValidatorChain";
         
 class ZForm extends React.PureComponent
 {
-    postRequestData = {};
+    //postRequestData = {};
 
     state = {
 
-        isSuccessRequest: false,
+        /*isSuccessRequest: false,
         isRequestSend: false,
 
         createdSendPost: false,
 
-        formError: '',
+        formError: '',*/
 
         elem1: {
             value: '',
@@ -31,6 +31,7 @@ class ZForm extends React.PureComponent
             error: ''
         },
 
+
     };
 
     constructor(props){
@@ -40,6 +41,8 @@ class ZForm extends React.PureComponent
         this.validatorChain = new ValidatorChain();
 
         this.state = this.getStartState();
+
+        //this.props.setFormElementsToState(this.getStartState());
 
     }
 
@@ -62,7 +65,7 @@ class ZForm extends React.PureComponent
 
             //console.log(data);
 
-            const formError = this.props.validateOnSubmit(data);
+          /*  const formError = this.props.validateOnSubmit(data);
 
             //console.log("formError " + formError);
 
@@ -85,9 +88,9 @@ class ZForm extends React.PureComponent
                     formError: formError
                 });
 
-            }
+            }*/
 
-            //this.props.submitButtonClickHandler(data);
+            this.props.submitButtonClickHandler(data);
 
         }else{
 
@@ -102,10 +105,11 @@ class ZForm extends React.PureComponent
         const name = target.name;
         const value = target.type === 'file' ? target.files : target.value;
 
-        console.log(value);
+        //console.log(value);
         //console.log(value);
 
-        const newState = { formError: '' };
+        //const newState = { formError: '' };
+        const newState = { };
         let error = '';
 
         if(this.props.elements[name].validators !== undefined){
@@ -121,14 +125,14 @@ class ZForm extends React.PureComponent
 
         };
 
-        //this.props.onInputChange();
+        if(this.props.onInputChange) this.props.onInputChange();
 
         this.setState(newState);
 
 
     };
 
-    onSubmitSuccess = (data) => {
+   /* onSubmitSuccess = (data) => {
 
         console.log("Submit success");
         console.log(data);
@@ -171,7 +175,7 @@ class ZForm extends React.PureComponent
 
         this.clearState();
 
-        /*this.setState({
+        /!*this.setState({
 
             isSuccessRequest: false,
             isRequestSend: false,
@@ -180,12 +184,12 @@ class ZForm extends React.PureComponent
 
             formError: ''
 
-        });*/
+        });*!/
 
         if(this.props.closeButtonClickHandler)
             this.props.closeButtonClickHandler();
 
-    };
+    };*/
 
     clearButtonClickHandler = (event) => {
 
@@ -194,9 +198,13 @@ class ZForm extends React.PureComponent
 
         this.clearState();
 
+        //this.props.onClearState();
+
     };
 
     clearState = () => {
+
+        if(this.props.onClearState) this.props.clearState();
 
         this.setState({
 
@@ -211,19 +219,19 @@ class ZForm extends React.PureComponent
         const submitButton = <SubmitButton title={this.props.submitButtonValue} color={"#d4ffcf"} />;
         const clearButton = <SubmitButton title={"Очистить"} color={"#ccc8c8"} onClick={this.clearButtonClickHandler} />;
 
-        const formStyle = (this.state.isRequestSend || this.state.isSuccessRequest) ? { display: "none" } : null;
-        const sendRequestStyle = (this.state.isRequestSend && !this.state.isSuccessRequest) ? null : { display: "none" };
+        //const formStyle = (this.state.isRequestSend || this.state.isSuccessRequest) ? { display: "none" } : null;
+        //const sendRequestStyle = (this.state.isRequestSend && !this.state.isSuccessRequest) ? null : { display: "none" };
 
         return (
 
             <div className={classes.ZForm}>
 
-                { this.props.isCloseButton && <CloseButton
+              {/*  { this.props.isCloseButton && <CloseButton
                     color={"#000000"}
                     clickHandler={this.closeButtonClickHandler}
-                /> }
+                /> }*/}
 
-                <div className={classes.Form} style={formStyle}>
+                <div className={classes.Form}>
 
 
                     <form action={"#"} className={classes.ZFormElements} onSubmit={this.submitFormHandler}>
@@ -234,8 +242,8 @@ class ZForm extends React.PureComponent
                             state={this.state}
                         />
 
-                        { this.state.formError && <div className={classes.FormError}>
-                            <p>{ this.state.formError }</p>
+                        { this.props.formError && <div className={classes.FormError}>
+                            <p>{ this.props.formError }</p>
                         </div> }
 
                         { clearButton }
@@ -246,7 +254,7 @@ class ZForm extends React.PureComponent
 
                 </div>
 
-                <div className={classes.SendRequest} style={sendRequestStyle}>
+               {/* <div className={classes.SendRequest} style={sendRequestStyle}>
                     { this.state.createdSendPost && <SendPostRequest
                         url={this.props.url}
                         data={{...this.postRequestData}}
@@ -259,7 +267,7 @@ class ZForm extends React.PureComponent
                     <p>{ this.props.successMessage }</p>
                     <button onClick={this.closeButtonClickHandler}>OK</button>
                 </div>
-                }
+                }*/}
 
 
             </div>
@@ -270,18 +278,27 @@ class ZForm extends React.PureComponent
 
     getStartState = () => {
 
-        const state = {
+        const state = {};
+
+        /*const state = {
             isSuccessRequest: false,
             isRequestSend: false,
 
             createdSendPost: false,
 
             formError: ''
-        };
+        };*/
 
         for(let element in this.props.elements){
 
-            state[element] = { value: '', error: ''};
+            if(this.props.elements[element].elementType === 'file'){
+
+                state[element] = { value: '', fileList: null, error: ''};
+
+            }
+
+            state[element] = { value: this.props.elements[element].value, error: ''};
+
 
         }
 
@@ -383,54 +400,27 @@ class ZForm extends React.PureComponent
 
     };
 
-    /* createToken = (data) => {
-
-         let stringToHash = data.phone + data.email + "Super secret phrase...";
-
-         if(stringToHash.length >  64){
-
-             stringToHash = stringToHash.substr(0, 63);
-
-         }
-
-         return btoa(stringToHash);
-
-     };
-
-     validateOnSubmit = (data) => {
-
-         if(data.name === ''){
-
-             return 'Как вас называть?';
-
-         }
-
-         if(data.phone === '' && data.email === ''){
-
-             return 'Укажите, пожалуйста, номер телефона или адрес электронной почты, иначе мы не сможем с вами связаться.';
-
-         }
-
-         return '';
-
-     };*/
 
 }
 
 ZForm.propTypes = {
 
     elements: PropTypes.object.isRequired,
-    url: PropTypes.string.isRequired,
     submitButtonValue: PropTypes.string.isRequired,
+    submitButtonClickHandler: PropTypes.func.isRequired,
 
-    isCloseButton: PropTypes.bool.isRequired,
-    closeButtonClickHandler: PropTypes.func,
+    //setFormElementsToState: PropTypes.func.isRequired,
+    formError: PropTypes.string,
+    //formElements: PropTypes.object,
 
-    validateOnSubmit: PropTypes.func.isRequired,
+    onInputChange: PropTypes.func,
+    onClearState: PropTypes.func,
+
+    /*validateOnSubmit: PropTypes.func.isRequired,
     createToken: PropTypes.func.isRequired,
 
     successMessage: PropTypes.string.isRequired,
-    onSubmitSuccess: PropTypes.func,
+    onSubmitSuccess: PropTypes.func,*/
 
     hiddenFields: PropTypes.array
 

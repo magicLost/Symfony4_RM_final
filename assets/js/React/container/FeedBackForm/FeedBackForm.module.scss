@@ -1,0 +1,21 @@
+.FeedBackForm{
+
+  .Success{
+    padding: 30px;
+    text-align: center;
+  }
+
+  .Error{
+    padding: 30px;
+    text-align: center;
+
+    p{
+      padding-bottom: 15px;
+    }
+  }
+
+  .Spinner{
+    padding: 40px;
+  }
+
+}

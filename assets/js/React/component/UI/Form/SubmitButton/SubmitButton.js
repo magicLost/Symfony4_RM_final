@@ -9,7 +9,7 @@ const submitButton = ({title, color, onClick = null}) => {
             className={classes.SubmitButton}
             style={{backgroundColor: color}}
             onClick={onClick}
-        >{name}</button>
+        >{title}</button>
             
     );
 
